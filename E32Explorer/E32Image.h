@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <memory>
 
 // Sources:
 // For a short overview: https://web.archive.org/web/20120813204404/http://www.antonypranata.com/node/10
@@ -28,13 +29,26 @@ enum class ProcessPriority
 struct E32CodeSection
 {
 	//Text section
-	//Should the data be copied here ?
+	//Should the data be copied here ? Or just let the offset from the header.
 
 	//Assumption: We don't have negative import ordinal.
 	//Otherwise use int32_t.
 	std::vector<uint32_t> import_address_table;
 	
 	std::vector<uint32_t> export_directory;
+};
+
+struct E32ImportBlock
+{
+	uint32_t dll_name_offset; //relative to the import section // offset of name of dll importing from
+	int32_t number_of_imports;		// number of imports from this dll
+	std::vector<uint32_t> ordinals;	// TUint32 iImport[iNumberOfImports];
+};
+
+struct E32ImportSection
+{
+	int32_t size;			    // size of this section
+	std::vector<std::unique_ptr<E32ImportBlock>> imports;	// E32ImportBlock[iDllRefTableCount];
 };
 
 struct E32RelocSection
@@ -104,7 +118,7 @@ struct E32Image {
 	E32CodeSection code_section; //Contains text section, import address table and export directory
 	//BSS section <- usually empty
 	//Data section  <- usually empty
-	//Import section
+	E32ImportSection import_section;
 	E32RelocSection code_reloc_section;
 	E32RelocSection data_reloc_section;
 };

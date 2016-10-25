@@ -46,9 +46,9 @@ bool loader::load(std::string path, E32Image& image)
 		return false;
 	}
 
-
 	parseIAT(image);
 	parseExportDir(image);
+	parseImportSection(image);
 	parseRelocSections(image);
 
 	return true;
@@ -152,11 +152,30 @@ void loader::parseIAT(E32Image& image) {
 void loader::parseExportDir(E32Image& image) {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
 
-	for (uint32_t i = 0; i < image.header.export_count; i++) {
+	for (int32_t i = 0; i < image.header.export_count; i++) {
 		image.code_section.export_directory.push_back(data32[(image.header.export_offset/4) + i]);
 	}
 }
 
+void loader::parseImportSection(E32Image& image) {
+	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
+
+	uint32_t offset = image.header.import_offset / 4;
+	image.import_section.size = data32[offset++];
+	
+	for (int32_t i = 0; i < image.header.dll_count; i++) {
+		std::unique_ptr<E32ImportBlock> block(new E32ImportBlock);
+
+		block->dll_name_offset = data32[offset++];
+		block->number_of_imports = data32[offset++];
+
+		for (int32_t j = 0; j < block->number_of_imports; j++) {
+			block->ordinals.push_back(data32[offset++]);
+		}
+
+		image.import_section.imports.push_back(std::move(block));
+	}
+}
 
 void loader::parseRelocSections(E32Image& image) {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());

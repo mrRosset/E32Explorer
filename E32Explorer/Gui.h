@@ -18,6 +18,7 @@ private:
 	bool show_metadata_window = true;
 	bool show_iat_window = true;
 	bool show_export_dir_window = true;
+	bool show_import_section = true;
 	MemoryEditor memory_editor;
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
