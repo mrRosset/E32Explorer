@@ -9,7 +9,8 @@ E32Image:
 - [ ] With J-format header
 - [ ] With V-format header
 
-- [ ] With standard PE import format
+E32Image:
+- [x] With standard PE import format
 - [ ] With new PE import format (less redundancy)
 - [ ] With elf import format
 
