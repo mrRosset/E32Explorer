@@ -12,7 +12,4 @@ namespace loader
 	void parseImportSection(E32Image& image);
 	void parseRelocSections(E32Image& image);
 	void checkHeaderValidity(E32Image& image);
-
-	// For checksums
-	void u8_from_32(uint8_t output[4], uint32_t value);
 }

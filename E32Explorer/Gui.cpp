@@ -103,7 +103,10 @@ bool Gui::render(E32Image& image) {
 			ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header.uid1); ImGui::NextColumn();
 			ImGui::Selectable("uid2"); ImGui::NextColumn(); imgui_print_hex(header.uid2); ImGui::NextColumn();
 			ImGui::Selectable("uid3"); ImGui::NextColumn(); imgui_print_hex(header.uid3); ImGui::NextColumn();
-			ImGui::Selectable("uid_checksum"); ImGui::NextColumn(); imgui_print_hex(header.uid_checksum); ImGui::NextColumn();
+			ImGui::Selectable("uid_checksum"); ImGui::NextColumn();
+			imgui_print_hex(header.uid_checksum); 
+			if (image.valid_uid_checksum) {ImGui::SameLine(); ImGui::Selectable("(valid)");}
+			ImGui::NextColumn();
 			ImGui::Selectable("signature"); ImGui::NextColumn(); imgui_print_hex(header.signature); 
 			ImGui::SameLine();
 			char signature_text[] = {'(', header.signature & 0xFF, (header.signature >> 8) & 0xFF, (header.signature >> 16) & 0xFF, (header.signature >> 24) & 0xFF, ')' ,'\0'};

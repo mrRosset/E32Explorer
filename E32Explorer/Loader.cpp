@@ -54,7 +54,7 @@ bool loader::load(std::string path, E32Image& image)
 	return true;
 }
 
-void loader::u8_from_32(uint8_t output[4], uint32_t value)
+void u8_from_32(uint8_t output[4], uint32_t value)
 {
 	output[0] = (uint8_t)value;
 	output[1] = (uint8_t)(value >>= 8);
