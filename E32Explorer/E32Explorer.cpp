@@ -7,7 +7,11 @@ int main(int argc, char *argv[])
 {
 	if (argc > 1) {
 		E32Image file;
-		loader::load(argv[1], file);
+		bool err = loader::load(argv[1], file);
+
+		if (!err) {
+			return -1;
+		}
 
 		Gui gui;
 		bool running = true;

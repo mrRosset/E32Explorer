@@ -45,7 +45,7 @@ struct E32RelocSection
 
 
 //Structure created to contains the flags in more easily understandble way
-//Not representative of what is in the application file.
+//Not representative of what is in the on-disk file.
 struct E32Flags
 {
 	bool executable_type;  // false = executable, true = DLL
@@ -95,8 +95,10 @@ struct E32ImageHeader {
 
 struct E32Image {
 	std::vector<uint8_t> data;
-	uint32_t entry_point;
-	uint32_t import_count;
+	bool valid_uid_checksum = false;
+	bool valid_signature = false;
+
+	//uint32_t import_count;
 
 	E32ImageHeader header;
 	E32CodeSection code_section; //Contains text section, import address table and export directory

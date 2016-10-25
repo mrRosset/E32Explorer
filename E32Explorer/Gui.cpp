@@ -196,7 +196,7 @@ bool Gui::render(E32Image& image) {
 			imgui_print_hex(header.export_offset); ImGui::NextColumn();
 			imgui_print_hex(header.export_count*4); ImGui::NextColumn(); //Why *4 ?? Taken from petran pe_dump.cpp
 			ImGui::NextColumn(); ImGui::NextColumn(); 
-			imgui_print_hex(header.export_count); ImGui::SameLine(); ImGui::Selectable("Entries"); ImGui::NextColumn();
+			ImGui::Selectable(std::to_string(header.export_count).c_str()); ImGui::SameLine(); ImGui::Selectable("Entries"); ImGui::NextColumn();
 
 			ImGui::Selectable("Import"); ImGui::NextColumn();
 			imgui_print_hex(header.import_offset); ImGui::NextColumn(); ImGui::NextColumn();

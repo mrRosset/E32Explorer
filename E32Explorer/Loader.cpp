@@ -25,7 +25,28 @@ bool loader::load(std::string path, E32Image& image)
 	}
 
 	stream.close();
+
 	parseHeader(image);
+	checkHeaderValidity(image);
+
+	if (!image.valid_uid_checksum) {
+		std::cerr << "Invalid ui checksum. Not a valid Symbian OS app";
+		return false;
+	}
+	if (!image.valid_signature) {
+		std::cerr << "Not an E32Image. TRomImage are not supported";
+		return false;
+	}
+	if (image.header.flags.header_format != 0) {
+		std::cerr << "Not a standard header. J and V headers are not supported";
+		return false;
+	}
+	if (image.header.flags.import_format != 0) {
+		std::cerr << "Not an PE import section. Other import sections are not supported";
+		return false;
+	}
+
+
 	parseIAT(image);
 	parseExportDir(image);
 	parseRelocSections(image);
@@ -41,7 +62,27 @@ void loader::u8_from_32(uint8_t output[4], uint32_t value)
 	output[3] = (uint8_t)(value >>= 8);
 }
 
-bool loader::parseHeader(E32Image& image)
+void loader::checkHeaderValidity(E32Image& image) {
+	E32ImageHeader header = image.header;
+
+	// Check the signature
+	image.valid_signature = header.signature == 'COPE'; // 'EPOC' backwards for little-endian
+
+	// Check the UID checksum validity
+	uint8_t uids[12] = {};
+	u8_from_32(uids, image.header.uid1);
+	u8_from_32(uids + 4, image.header.uid2);
+	u8_from_32(uids + 8, image.header.uid3);
+
+	uint8_t even_bytes[] = { uids[0], uids[2], uids[4], uids[6], uids[8], uids[10] };
+	uint8_t odd_bytes[] = { uids[1], uids[3], uids[5], uids[7], uids[9], uids[11] };
+
+	uint32_t uid_crc = ((uint32_t)utils::crc16_ccitt(odd_bytes) << 16) | utils::crc16_ccitt(even_bytes);
+
+	image.valid_uid_checksum = uid_crc == image.header.uid_checksum;
+}
+
+void loader::parseHeader(E32Image& image)
 {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
 	E32ImageHeader& header = image.header;
@@ -79,9 +120,6 @@ bool loader::parseHeader(E32Image& image)
 	header.data_relocation_offset = data32[29];
 	header.priority = static_cast<ProcessPriority>(data32[30]);
 
-	// The entry point address
-	image.entry_point = header.code_offset;
-
 	// Get the flags
 	header.flags.executable_type = (header.flags_raw >> 0) & 1;
 	header.flags.call_entry_point = (header.flags_raw >> 1) & 1;
@@ -91,67 +129,11 @@ bool loader::parseHeader(E32Image& image)
 	header.flags.header_format = (header.flags_raw >> 24) & 0xF;
 	header.flags.import_format = (header.flags_raw >> 28) & 0xF;
 
-	// TODO: Data relocation support
-	if (header.data_relocation_offset != 0)
-	{
-		std::cerr << "Data relocation not supported" << std::endl;
-		return false;
-	}
-
-	// Check the signature
-	if (header.signature != 'COPE') // 'EPOC' backwards for little-endian
-	{
-		std::cerr << "Invalid E32Image signature." << std::endl;
-		return false;
-	}
-
-	// Check the UID checksum validity
-	uint8_t uids[12] = {};
-	u8_from_32(uids, image.header.uid1);
-	u8_from_32(uids + 4, image.header.uid2);
-	u8_from_32(uids + 8, image.header.uid3);
-
-	uint8_t even_bytes[] = { uids[0], uids[2], uids[4], uids[6], uids[8], uids[10] };
-	uint8_t odd_bytes[] = { uids[1], uids[3], uids[5], uids[7], uids[9], uids[11] };
-
-	uint32_t uid_crc = ((uint32_t)utils::crc16_ccitt(odd_bytes) << 16) | utils::crc16_ccitt(even_bytes);
-
-	if (uid_crc != image.header.uid_checksum)
-	{
-		std::cerr << "UID checksum mismatch." << std::endl;
-		return false;
-	}
-
-
-	/*// Calculate import count
-	uint32_t* imports = reinterpret_cast<uint32_t*>(image.data.data() + header.code_offset + header.text_size);
-	image.import_count = 0;
-
-	while (*imports++)
-	{
-		image.import_count++;
-	}
-
-	if (image.header.dll_count == 0)
-	{
-		std::cerr << "DLL count is 0, please report this. " << image.import_count << std::endl;
-		return false;
-	}
-
-	// The number of exports should always be at least 1
-	if (header.export_count != 1)
-	{
-		std::cerr << "Export count is not 1. Report this. " <<  image.header.export_count << std::endl;
-		return false;
-	}
-
 	// Don't include the header in the data
-	std::vector<decltype(image.data)::value_type>(image.data.begin() + image.header.code_offset, image.data.end()).swap(image.data);
-	*/
-	return true;
+	//std::vector<decltype(image.data)::value_type>(image.data.begin() + image.header.code_offset, image.data.end()).swap(image.data);
 }
 
-bool loader::parseIAT(E32Image& image) {
+void loader::parseIAT(E32Image& image) {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
 	uint32_t iat_offset = image.header.code_offset + image.header.text_size;
 	uint32_t i = 0;
@@ -164,23 +146,19 @@ bool loader::parseIAT(E32Image& image) {
 		line = data32[(iat_offset/4) + i];
 		image.code_section.import_address_table.push_back(line);
 	}
-
-	return true;
 }
 
 
-bool loader::parseExportDir(E32Image& image) {
+void loader::parseExportDir(E32Image& image) {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
 
 	for (uint32_t i = 0; i < image.header.export_count; i++) {
 		image.code_section.export_directory.push_back(data32[(image.header.export_offset/4) + i]);
 	}
-
-	return true;
 }
 
 
-bool loader::parseRelocSections(E32Image& image) {
+void loader::parseRelocSections(E32Image& image) {
 	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
 	
 	//we divide by 4 since we are using a uint32 (= 4 bytes) array, so we need to adapt the offset
@@ -200,6 +178,4 @@ bool loader::parseRelocSections(E32Image& image) {
 		image.data_reloc_section.size = 0;
 		image.data_reloc_section.number_of_relocs = 0;
 	}
-
-	return true;
 }
