@@ -3,6 +3,14 @@
 #include "Loader.h"
 #include "Gui.h"
 
+std::string extract_filename(const std::string& filepath)
+{
+	auto pos = filepath.rfind("\\");
+	if (pos == std::string::npos)
+		pos = -1;
+	return std::string(filepath.begin() + pos + 1, filepath.end());
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc > 1) {
@@ -13,7 +21,7 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 
-		Gui gui;
+		Gui gui(extract_filename(std::string(argv[1])));
 		bool running = true;
 
 		const int FRAMES_PER_SECOND = 25;

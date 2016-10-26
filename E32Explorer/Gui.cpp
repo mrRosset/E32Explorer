@@ -18,7 +18,7 @@ static void error_callback(int error, const char* description)
 }
 
 
-Gui::Gui() {
+Gui::Gui(std::string additional_title) {
 	// Setup window
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit()) {
@@ -30,7 +30,7 @@ Gui::Gui() {
 #if __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-	window = glfwCreateWindow(1280, 780, "E32Explorer", NULL, NULL);
+	window = glfwCreateWindow(1280, 780, ("E32Explorer - " + additional_title).c_str(), NULL, NULL);
 	//center windows
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	int window_width, window_height;

@@ -23,7 +23,7 @@ private:
 	ImVec4 clear_color = ImColor(114, 144, 154);
 
 public:
-	Gui();
+	Gui(std::string additional_title);
 	~Gui();
 	bool render(E32Image& image);
 

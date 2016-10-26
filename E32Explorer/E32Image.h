@@ -40,15 +40,15 @@ struct E32CodeSection
 
 struct E32ImportBlock
 {
-	uint32_t dll_name_offset; //relative to the import section // offset of name of dll importing from
-	int32_t number_of_imports;		// number of imports from this dll
+	uint32_t dll_name_offset; //relative to the import section
+	int32_t number_of_imports; // number of imports from this dll
 	std::vector<uint32_t> ordinals;	// TUint32 iImport[iNumberOfImports];
 };
 
 struct E32ImportSection
 {
-	int32_t size;			    // size of this section
-	std::vector<std::unique_ptr<E32ImportBlock>> imports;	// E32ImportBlock[iDllRefTableCount];
+	int32_t size; // size of this section
+	std::vector<std::unique_ptr<E32ImportBlock>> imports; // E32ImportBlock[iDllRefTableCount];
 };
 
 struct E32RelocSection
