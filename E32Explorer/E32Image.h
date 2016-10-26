@@ -51,6 +51,21 @@ struct E32ImportSection
 	std::vector<std::unique_ptr<E32ImportBlock>> imports; // E32ImportBlock[iDllRefTableCount];
 };
 
+struct E32RelocationBlock
+{
+	uint32_t offset;
+	uint32_t block_size;
+	//2 byte sub-block entry.
+	//The top 4 bits specify the type of relocation :
+	//0 – Not a valid relocation.
+	//	1 – Relocate relative to code section.
+	//	2 – Relocate relative to data section.
+	//	3 – Try to work it out at load time(legacy algorithm).
+	//	The bottom 12 bits specify the offset within the 4 K page of the item
+	//	to be relocated.
+	std::vector<uint16_t> sub_block_entry;
+};
+
 struct E32RelocSection
 {
 	int32_t size;
@@ -69,6 +84,11 @@ struct E32Flags
 	uint8_t entry_point_type;   // 0 = EKA1, 1 = EKA2
 	uint8_t header_format;      // 0 = Basic, 1 = J-format, 2 = V-format
 	uint8_t import_format;      // 0 = Standard PE format, 1 = ELF format, 2 = PE format without redundancy in the import section
+};
+
+struct E32ImageHeaderJ: E32ImageHeader {
+	uint32_t compression_type; //0 = no compression
+	uint32_t uncompressed_size;
 };
 
 struct E32ImageHeader {
@@ -106,6 +126,8 @@ struct E32ImageHeader {
 	uint32_t data_relocation_offset;
 	ProcessPriority priority;
 };
+
+
 
 struct E32Image {
 	std::vector<uint8_t> data;
