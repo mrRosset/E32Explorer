@@ -111,6 +111,7 @@ struct E32Image {
 	std::vector<uint8_t> data;
 	bool valid_uid_checksum = false;
 	bool valid_signature = false;
+	bool valid_imports = false;
 
 	//uint32_t import_count;
 

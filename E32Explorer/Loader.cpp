@@ -50,6 +50,12 @@ bool loader::load(std::string path, E32Image& image)
 	parseExportDir(image);
 	parseImportSection(image);
 	parseRelocSections(image);
+	checkImportValidity(image);
+
+	if (!image.valid_imports) {
+		std::cerr << "Incoherence betweem the Import Address Table and the Import section" << std::endl;
+		return false;
+	}
 
 	return true;
 }
@@ -196,5 +202,21 @@ void loader::parseRelocSections(E32Image& image) {
 	else {
 		image.data_reloc_section.size = 0;
 		image.data_reloc_section.number_of_relocs = 0;
+	}
+}
+
+void loader::checkImportValidity(E32Image& image) {
+	//Assumption: Both list should be in the same order.
+	//Since we have redundancy, I'm not sure which one the software use.
+	//And there is no garuantee someone didn't mess with the one not used
+	image.valid_imports = true;
+	int iat_index = 0;
+
+	for (std::unique_ptr<E32ImportBlock>& block : image.import_section.imports) {
+		for (uint32_t ordinal : block->ordinals) {
+			if (image.code_section.import_address_table[iat_index++] != ordinal) {
+				image.valid_imports =  false;
+			}
+		}
 	}
 }
