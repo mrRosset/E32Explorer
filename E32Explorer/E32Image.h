@@ -68,7 +68,7 @@ struct E32Flags
 	uint8_t abi;                // 0 = GCC98r2, 1 = EABI
 	uint8_t entry_point_type;   // 0 = EKA1, 1 = EKA2
 	uint8_t header_format;      // 0 = Basic, 1 = J-format, 2 = V-format
-	uint8_t import_format;      // 0 = Standard PE format, 1 = ELF format, 2 = PE format with some other custom shit
+	uint8_t import_format;      // 0 = Standard PE format, 1 = ELF format, 2 = PE format without redundancy in the import section
 };
 
 struct E32ImageHeader {
@@ -112,8 +112,8 @@ struct E32Image {
 	bool valid_uid_checksum = false;
 	bool valid_signature = false;
 	bool valid_imports = false;
-
 	//uint32_t import_count;
+
 
 	E32ImageHeader header;
 	E32CodeSection code_section; //Contains text section, import address table and export directory

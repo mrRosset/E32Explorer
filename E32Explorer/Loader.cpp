@@ -41,8 +41,8 @@ bool loader::load(std::string path, E32Image& image)
 		std::cerr << "Not a standard header. J and V headers are not supported";
 		return false;
 	}
-	if (image.header.flags.import_format != 0) {
-		std::cerr << "Not an PE import section. Other import sections are not supported";
+	if (image.header.flags.import_format != 0 && image.header.flags.import_format != 2) {
+		std::cerr << "ELF import section not supported";
 		return false;
 	}
 
@@ -175,8 +175,11 @@ void loader::parseImportSection(E32Image& image) {
 		block->dll_name_offset = data32[offset++];
 		block->number_of_imports = data32[offset++];
 
-		for (int32_t j = 0; j < block->number_of_imports; j++) {
-			block->ordinals.push_back(data32[offset++]);
+		//only standard PE import format has redundancy
+		if (image.header.flags.import_format == 0) {
+			for (int32_t j = 0; j < block->number_of_imports; j++) {
+				block->ordinals.push_back(data32[offset++]);
+			}	
 		}
 
 		image.import_section.imports.push_back(std::move(block));
@@ -206,6 +209,13 @@ void loader::parseRelocSections(E32Image& image) {
 }
 
 void loader::checkImportValidity(E32Image& image) {
+	//import validity only exist when there is redundancy between iat and import section
+	//(so only when import format is standard PE)
+	if (image.header.flags.import_format != 0) {
+		image.valid_imports = true;
+		return;
+	}
+
 	//Assumption: Both list should be in the same order.
 	//Since we have redundancy, I'm not sure which one the software use.
 	//And there is no garuantee someone didn't mess with the one not used

@@ -11,7 +11,7 @@ E32Image:
 
 E32Image:
 - [x] With standard PE import format
-- [ ] With new PE import format (less redundancy)
+- [x] With PE without redundancy (untested)
 - [ ] With elf import format
 
 TRomImage
