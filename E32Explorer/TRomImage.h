@@ -8,12 +8,14 @@
 // - Symbian ^3 Documentation: http://www.symlab.org/main/documentation/reference/s3/pdk/GUID-88C84EC0-B63E-3848-82BF-E3A81E2F7E9A.html
 
 //TODO move some from E32Image.h struct/class to a common file
+//TODO figure out what exactly is TRomHeader and how it's related to TRomImageHeader
 
 struct TDllRefTable
 {
 	uint16_t flags;
 	uint16_t number_of_entries;// iNumberOfEntries;
 	//probably has a vector of ref block, but it's never noted, I need to check
+	//TRomImageHeader *	iEntry <- it's an array
 };
 
 //Structure created to contains the flags in more easily understandble way
@@ -74,6 +76,8 @@ struct TRomImageHeader {
 };
 
 /*
+From Symbian ^3 documentation on TRomImageHeader
+
 ROM file images have the following sections:
 
 The header
