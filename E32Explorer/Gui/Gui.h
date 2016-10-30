@@ -1,16 +1,16 @@
 #pragma once
 
-#include "imgui\imgui.h"
-#include "imgui\imgui_impl_glfw_gl3.h"
+#include "..\imgui\imgui.h"
+#include "..\imgui\imgui_impl_glfw_gl3.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
-#include "E32Image.h"
+#include "..\E32Image.h"
 #include "MemoryEditor.h"
 
 class Gui {
-private:
+protected:
 	GLFWwindow* window;
 	bool show_test_window = true;
 	bool show_header_window = true;
@@ -25,6 +25,11 @@ private:
 public:
 	Gui(std::string additional_title);
 	~Gui();
-	bool render(E32Image& image);
+	virtual bool render() = 0;
+	void imgui_print_hex(uint8_t u);
+	void imgui_print_hex(uint16_t u);
+	void imgui_print_hex(uint32_t u);
+	void imgui_print_hex(int32_t i);
+	void imgui_print_hex(int64_t i);
 
 };

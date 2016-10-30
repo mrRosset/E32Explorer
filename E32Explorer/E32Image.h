@@ -86,10 +86,10 @@ struct E32Flags
 	uint8_t import_format;      // 0 = Standard PE format, 1 = ELF format, 2 = PE format without redundancy in the import section
 };
 
-struct E32ImageHeaderJ: E32ImageHeader {
+/*struct E32ImageHeaderJ: E32ImageHeader {
 	uint32_t compression_type; //0 = no compression
 	uint32_t uncompressed_size;
-};
+};*/
 
 struct E32ImageHeader {
 	uint32_t uid1;

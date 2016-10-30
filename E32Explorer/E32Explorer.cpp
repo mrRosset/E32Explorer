@@ -1,7 +1,7 @@
 #include <iostream>
 #include "E32Image.h"
 #include "Loader.h"
-#include "Gui.h"
+#include "Gui\GuiE32Image.h"
 
 std::string extract_filename(const std::string& filepath)
 {
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 			return -1;
 		}
 
-		Gui gui(extract_filename(std::string(argv[1])));
+		GuiE32Image gui(file, extract_filename(std::string(argv[1])));
 		bool running = true;
 
 		const int FRAMES_PER_SECOND = 25;
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 		int sleep_time = 0;
 
 		while (running) {
-			running =gui.render(file);
+			running =gui.render();
 
 			next_game_tick += SKIP_TICKS;
 			sleep_time = next_game_tick - GetTickCount();
