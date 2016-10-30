@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <inttypes.h>
-#include <type_traits> 
+
 
 static void error_callback(int error, const char* description)
 {

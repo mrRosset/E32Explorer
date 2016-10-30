@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
 		const int FRAMES_PER_SECOND = 25;
 		const int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
-		DWORD next_game_tick = GetTickCount();
+		ULONGLONG next_game_tick = GetTickCount64();
 		int sleep_time = 0;
 
 		while (running) {

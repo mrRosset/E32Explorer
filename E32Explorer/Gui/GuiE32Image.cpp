@@ -1,5 +1,7 @@
 #include "GuiE32Image.h"
 
+#include <type_traits> 
+
 GuiE32Image::GuiE32Image(E32Image& image_, std::string additional_title):
 	Gui(additional_title),
 	image(image_)
