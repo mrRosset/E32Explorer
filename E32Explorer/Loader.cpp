@@ -76,6 +76,7 @@ bool loader::load(std::string path, TRomImage& image) {
 	}
 
 	parseHeader(image);
+	checkHeaderValidity(image);
 
 	return true;
 }
@@ -89,11 +90,28 @@ void u8_from_32(uint8_t output[4], uint32_t value)
 }
 
 void loader::checkHeaderValidity(E32Image& image) {
-	E32ImageHeader header = image.header;
+	E32ImageHeader& header = image.header;
 
 	// Check the signature
 	image.valid_signature = header.signature == 'COPE'; // 'EPOC' backwards for little-endian
 
+	// Check the UID checksum validity
+	uint8_t uids[12] = {};
+	u8_from_32(uids, image.header.uid1);
+	u8_from_32(uids + 4, image.header.uid2);
+	u8_from_32(uids + 8, image.header.uid3);
+
+	uint8_t even_bytes[] = { uids[0], uids[2], uids[4], uids[6], uids[8], uids[10] };
+	uint8_t odd_bytes[] = { uids[1], uids[3], uids[5], uids[7], uids[9], uids[11] };
+
+	uint32_t uid_crc = ((uint32_t)utils::crc16_ccitt(odd_bytes) << 16) | utils::crc16_ccitt(even_bytes);
+
+	image.valid_uid_checksum = uid_crc == image.header.uid_checksum;
+}
+
+
+void loader::checkHeaderValidity(TRomImage& image) {
+	TRomImageHeader& header = image.header;
 	// Check the UID checksum validity
 	uint8_t uids[12] = {};
 	u8_from_32(uids, image.header.uid1);

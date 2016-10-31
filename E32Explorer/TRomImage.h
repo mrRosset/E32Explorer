@@ -92,6 +92,7 @@ used by the executable.
 
 struct TRomImage {
 	std::vector<uint8_t> data;
+	bool valid_uid_checksum = false;
 
 	TRomImageHeader header;
 

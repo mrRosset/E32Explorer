@@ -15,5 +15,6 @@ namespace loader
 	void parseImportSection(E32Image& image);
 	void parseRelocSections(E32Image& image);
 	void checkHeaderValidity(E32Image& image);
+	void checkHeaderValidity(TRomImage& image);
 	void checkImportValidity(E32Image& image);
 }

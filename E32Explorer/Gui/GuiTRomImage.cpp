@@ -20,7 +20,9 @@ void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 	ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header.uid1); ImGui::NextColumn();
 	ImGui::Selectable("uid2"); ImGui::NextColumn(); imgui_print_hex(header.uid2); ImGui::NextColumn();
 	ImGui::Selectable("uid3"); ImGui::NextColumn(); imgui_print_hex(header.uid3); ImGui::NextColumn();
-	ImGui::Selectable("uid_checksum"); ImGui::NextColumn(); imgui_print_hex(header.uid_checksum); ImGui::NextColumn();
+	ImGui::Selectable("uid_checksum"); ImGui::NextColumn(); imgui_print_hex(header.uid_checksum);
+	if (image.valid_uid_checksum) { ImGui::SameLine(); ImGui::Selectable("(Valid)"); }
+	ImGui::NextColumn();
 	ImGui::Selectable("entry_point"); ImGui::NextColumn(); imgui_print_hex(header.entry_point); ImGui::NextColumn();
 	ImGui::Selectable("code_address"); ImGui::NextColumn(); imgui_print_hex(header.code_address); ImGui::NextColumn();
 	ImGui::Selectable("data_address"); ImGui::NextColumn(); imgui_print_hex(header.data_address); ImGui::NextColumn();
