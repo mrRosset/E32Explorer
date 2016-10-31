@@ -36,6 +36,7 @@ bool GuiE32Image::render() {
 			ImGui::Selectable("uid_checksum"); ImGui::NextColumn();
 			imgui_print_hex(header.uid_checksum);
 			if (image.valid_uid_checksum) { ImGui::SameLine(); ImGui::Selectable("(Valid)"); }
+			else { ImGui::SameLine(); ImGui::Selectable("(Invalid)"); }
 			ImGui::NextColumn();
 			ImGui::Selectable("signature"); ImGui::NextColumn(); imgui_print_hex(header.signature);
 			ImGui::SameLine();

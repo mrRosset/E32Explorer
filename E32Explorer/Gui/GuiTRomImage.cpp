@@ -22,6 +22,7 @@ void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 	ImGui::Selectable("uid3"); ImGui::NextColumn(); imgui_print_hex(header.uid3); ImGui::NextColumn();
 	ImGui::Selectable("uid_checksum"); ImGui::NextColumn(); imgui_print_hex(header.uid_checksum);
 	if (image.valid_uid_checksum) { ImGui::SameLine(); ImGui::Selectable("(Valid)"); }
+	else { ImGui::SameLine(); ImGui::Selectable("(Invalid)"); }
 	ImGui::NextColumn();
 	ImGui::Selectable("entry_point"); ImGui::NextColumn(); imgui_print_hex(header.entry_point); ImGui::NextColumn();
 	ImGui::Selectable("code_address"); ImGui::NextColumn(); imgui_print_hex(header.code_address); ImGui::NextColumn();
