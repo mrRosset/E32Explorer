@@ -1,3 +1,5 @@
+#pragma once
+
 // Mini memory editor for ImGui (to embed in your game/tools)
 // v0.10
 //

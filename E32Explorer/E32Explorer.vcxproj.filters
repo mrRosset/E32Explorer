@@ -19,6 +19,7 @@
     <ClCompile Include="Gui\Gui.cpp" />
     <ClCompile Include="Gui\MemoryEditor.h" />
     <ClCompile Include="Gui\GuiE32Image.cpp" />
+    <ClCompile Include="Gui\GuiTRomImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="E32Image.h" />
@@ -46,6 +47,8 @@
     <ClInclude Include="TRomImage.h" />
     <ClInclude Include="Gui\Gui.h" />
     <ClInclude Include="Gui\GuiE32Image.h" />
+    <ClInclude Include="E32Std.h" />
+    <ClInclude Include="Gui\GuiTRomImage.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="imgui">

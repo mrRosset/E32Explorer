@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
-#include "E32Image.h"
+#include <vector>
+#include "E32Std.h"
 
 //-----------Sources-----------//
 // - E32rom.h from S60 SDK v1.2 (there are some changes in more recent versions but they also have more explanations

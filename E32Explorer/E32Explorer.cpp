@@ -2,6 +2,7 @@
 #include "E32Image.h"
 #include "Loader.h"
 #include "Gui\GuiE32Image.h"
+#include "Gui\GuiTRomImage.h"
 
 std::string extract_filename(const std::string& filepath)
 {
@@ -14,15 +15,29 @@ std::string extract_filename(const std::string& filepath)
 int main(int argc, char *argv[])
 {
 	if (argc > 1) {
+		//First try with E32Image
 		E32Image file;
-		bool err = loader::load(argv[1], file);
+		bool worked = loader::load(argv[1], file);
 
-		if (!err) {
-			return -1;
+		Gui* gui = nullptr;
+
+		if (worked) {
+			gui = new GuiE32Image(file, extract_filename(std::string(argv[1])));
+		}
+		else {
+			//next try: TRomImage
+			TRomImage file;
+			bool worked = loader::load(argv[1], file);
+
+			if (!worked) {
+				//not a know format
+				return -1;
+			}
+
+			gui = new GuiTRomImage(file, extract_filename(std::string(argv[1])));
 		}
 
-		GuiE32Image gui(file, extract_filename(std::string(argv[1])));
-		bool running = true;
+		bool running = true;;
 
 		const int FRAMES_PER_SECOND = 25;
 		const int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
@@ -30,7 +45,7 @@ int main(int argc, char *argv[])
 		int sleep_time = 0;
 
 		while (running) {
-			running =gui.render();
+			running =gui->render();
 
 			next_game_tick += SKIP_TICKS;
 			sleep_time = next_game_tick - GetTickCount();
@@ -41,6 +56,8 @@ int main(int argc, char *argv[])
 				// Shit, we are running behind!
 			}
 		}
+
+		delete gui;
 	}
 
 	return 0;

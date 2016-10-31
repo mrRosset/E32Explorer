@@ -3,8 +3,9 @@
 #include <iostream>
 #include <fstream>
 
-bool loader::load(std::string path, E32Image& image)
-{
+
+bool loadData(std::string path, std::vector<uint8_t>& data) {
+
 	std::ifstream stream(path, std::ios::binary);
 
 	if (!stream)
@@ -17,15 +18,23 @@ bool loader::load(std::string path, E32Image& image)
 	uint64_t length = stream.tellg();
 	stream.seekg(0, std::ios::beg);
 
-	image.data.resize(length);
+	data.resize(length);
 
 	for (uint64_t i = 0; i < length; i++)
 	{
-		image.data[i] = stream.get();
+		data[i] = stream.get();
 	}
 
 	stream.close();
+	return true;
+}
 
+bool loader::load(std::string path, E32Image& image)
+{
+	auto err = loadData(path, image.data);
+	if (!err) {
+		return false;
+	}
 	parseHeader(image);
 	checkHeaderValidity(image);
 
@@ -34,7 +43,7 @@ bool loader::load(std::string path, E32Image& image)
 		return false;
 	}
 	if (!image.valid_signature) {
-		std::cerr << "Not an E32Image. TRomImage are not supported";
+		//std::cerr << "Not an E32Image. TRomImage are not supported";
 		return false;
 	}
 	if (image.header.flags.header_format != 0) {
@@ -56,6 +65,17 @@ bool loader::load(std::string path, E32Image& image)
 		std::cerr << "Incoherence betweem the Import Address Table and the Import section" << std::endl;
 		return false;
 	}
+
+	return true;
+}
+
+bool loader::load(std::string path, TRomImage& image) {
+	auto err = loadData(path, image.data);
+	if (!err) {
+		return false;
+	}
+
+	parseHeader(image);
 
 	return true;
 }
@@ -137,6 +157,42 @@ void loader::parseHeader(E32Image& image)
 
 	// Don't include the header in the data
 	//std::vector<decltype(image.data)::value_type>(image.data.begin() + image.header.code_offset, image.data.end()).swap(image.data);
+}
+
+void loader::parseHeader(TRomImage& image) {
+	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
+	TRomImageHeader& header = image.header;
+
+	header.uid1 = data32[0]; //uint32_t
+	header.uid2 = data32[1]; //uint32_t
+	header.uid3 = data32[2]; //uint32_t
+	header.uid_checksum = data32[3]; //uint32_t
+	header.entry_point = data32[4]; //uint32_t
+	header.code_address = data32[5]; //uint32_t
+	header.data_address = data32[6]; //uint32_t
+	header.code_size = data32[7]; //int32_t
+	header.text_size = data32[8]; //int32_t
+	header.data_size = data32[9]; //int32_t
+	header.bss_size = data32[10]; //int32_t
+	header.heap_minimum_size = data32[11]; //int32_t
+	header.heap_maximum_size = data32[12]; //int32_t
+	header.stack_size = data32[13]; //int32_t
+	header.dll_ref_table_address = data32[14]; //uint32_t
+	header.export_dir_count = data32[15]; //int32_t
+	header.export_dir_address = data32[16]; //uint32_t
+	header.code_checksum = data32[17]; //uint32_t
+	header.data_checksum = data32[18]; //uint32_t
+	header.major = data32[19]; //uint8_t
+	header.minor = data32[20]; //uint8_t
+	header.build = data32[21]; //uint16_t
+	header.flags_raw = data32[22]; //uint32_t
+	header.priority = static_cast<ProcessPriority>(data32[23]); //ProcessPriority
+	header.data_bss_linear_base_address = data32[24]; //uint32_t
+	header.next_extension_linear_address = data32[25]; //uint32_t
+	header.harware_variant = data32[26]; //uint32_t
+
+	//TODO parse flags
+	//header.flags = data32[]; //TRomImageFlags
 }
 
 void loader::parseIAT(E32Image& image) {
