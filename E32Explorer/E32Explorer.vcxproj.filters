@@ -20,6 +20,7 @@
     <ClCompile Include="Gui\MemoryEditor.h" />
     <ClCompile Include="Gui\GuiE32Image.cpp" />
     <ClCompile Include="Gui\GuiTRomImage.cpp" />
+    <ClCompile Include="deps\gl3w.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="E32Image.h" />
