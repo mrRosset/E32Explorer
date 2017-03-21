@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Gui.h"
-#include "..\E32Image.h"
+#include "../E32Image.h"
 #include "MemoryEditor.h"
 
 

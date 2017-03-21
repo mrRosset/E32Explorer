@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Gui.h"
-#include "..\TRomImage.h"
+#include "../TRomImage.h"
 #include "MemoryEditor.h"
 
 
