@@ -1,8 +1,10 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "E32Image.h"
 #include "Loader.h"
-#include "Gui\GuiE32Image.h"
-#include "Gui\GuiTRomImage.h"
+#include "Gui/GuiE32Image.h"
+#include "Gui/GuiTRomImage.h"
 
 std::string extract_filename(const std::string& filepath)
 {
@@ -37,23 +39,25 @@ int main(int argc, char *argv[])
 			gui = new GuiTRomImage(file, extract_filename(std::string(argv[1])));
 		}
 
-		bool running = true;;
+		bool running = true;
 
 		const int FRAMES_PER_SECOND = 25;
-		const int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
-		ULONGLONG next_game_tick = GetTickCount64();
-		int sleep_time = 0;
+		const uint64_t SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
+		auto clock = std::chrono::high_resolution_clock::now().time_since_epoch();
+		auto next_game_tick = std::chrono::duration_cast<std::chrono::milliseconds>(clock).count();
+		uint64_t sleep_time = 0;
 
 		while (running) {
 			running =gui->render();
 
 			next_game_tick += SKIP_TICKS;
-			sleep_time = next_game_tick - GetTickCount();
-			if (sleep_time >= 0) {
-				Sleep(sleep_time);
-			}
-			else {
-				// Shit, we are running behind!
+
+			clock = std::chrono::high_resolution_clock::now().time_since_epoch();
+			auto tickCount = std::chrono::duration_cast<std::chrono::milliseconds>(clock).count();
+			sleep_time = next_game_tick - tickCount;
+
+			if (sleep_time > 0) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
 			}
 		}
 

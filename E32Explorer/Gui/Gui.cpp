@@ -17,7 +17,7 @@ Gui::Gui(std::string additional_title) {
 		exit(-1);
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #if __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
@@ -42,30 +42,30 @@ Gui::~Gui() {
 
 void Gui::imgui_print_hex(uint8_t u) {
 	char label[32];
-	sprintf_s(label, "%02X", u);
+	sprintf(label, "%02X", u);
 	ImGui::Selectable(label);
 }
 
 void Gui::imgui_print_hex(uint16_t u) {
 	char label[32];
-	sprintf_s(label, "%08X", u);
+	sprintf(label, "%08X", u);
 	ImGui::Selectable(label);
 }
 
 void Gui::imgui_print_hex(uint32_t u) {
 	char label[32];
-	sprintf_s(label, "%08X", u);
+	sprintf(label, "%08X", u);
 	ImGui::Selectable(label);
 }
 
 void Gui::imgui_print_hex(int32_t i) {
 	char label[32];
-	sprintf_s(label, "%08X", i);
+	sprintf(label, "%08X", i);
 	ImGui::Selectable(label);
 }
 
 void Gui::imgui_print_hex(int64_t i) {
 	char label[32];
-	sprintf_s(label, "%00X%" PRId64 "", i);
+	sprintf(label, "%00X%" PRId64 "", i);
 	ImGui::Selectable(label);
 }

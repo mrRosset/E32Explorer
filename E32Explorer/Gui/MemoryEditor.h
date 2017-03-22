@@ -17,8 +17,8 @@
 #include <inttypes.h>
 #include <type_traits> 
 
-#include "..\imgui\imgui.h"
-#include "..\imgui\imgui_impl_glfw_gl3.h"
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_glfw_gl3.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <GL/gl3w.h>
@@ -40,8 +40,8 @@ struct MemoryEditor
 		Rows = 16;
 		DataEditingAddr = -1;
 		DataEditingTakeFocus = false;
-		strcpy_s(DataInput, "");
-		strcpy_s(AddrInput, "");
+		strcpy(DataInput, "");
+		strcpy(AddrInput, "");
 		AllowEdits = true;
 	}
 
@@ -122,8 +122,8 @@ struct MemoryEditor
 						if (DataEditingTakeFocus)
 						{
 							ImGui::SetKeyboardFocusHere();
-							sprintf_s(AddrInput, "%0*X", addr_digits_count, base_display_addr + addr);
-							sprintf_s(DataInput, "%02X", mem_data[addr]);
+							sprintf(AddrInput, "%0*X", addr_digits_count, base_display_addr + addr);
+							sprintf(DataInput, "%02X", mem_data[addr]);
 						}
 						ImGui::PushItemWidth(ImGui::CalcTextSize("FF").x);
 						ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_NoHorizontalScroll | ImGuiInputTextFlags_AlwaysInsertMode | ImGuiInputTextFlags_CallbackAlways;
@@ -138,7 +138,7 @@ struct MemoryEditor
 						if (data_write)
 						{
 							int data;
-							if (sscanf_s(DataInput, "%X", &data) == 1)
+							if (sscanf(DataInput, "%X", &data) == 1)
 								mem_data[addr] = (unsigned char)data;
 						}
 						ImGui::PopID();
@@ -204,7 +204,7 @@ struct MemoryEditor
 			if (ImGui::InputText("##addr", AddrInput, 32, ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_EnterReturnsTrue))
 			{
 				int goto_addr;
-				if (sscanf_s(AddrInput, "%X", &goto_addr) == 1)
+				if (sscanf(AddrInput, "%X", &goto_addr) == 1)
 				{
 					goto_addr -= base_display_addr;
 					if (goto_addr >= 0 && goto_addr < mem_size)
