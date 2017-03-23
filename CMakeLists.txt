@@ -9,15 +9,72 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) #avoid using compiler-specific extension (avoid using gnu++11)
 
-include_directories (${PROJECT_SOURCE_DIR}/deps/include/)
-file(GLOB sources
-		${PROJECT_SOURCE_DIR}/E32Explorer/*.cpp
-		${PROJECT_SOURCE_DIR}/E32Explorer/imgui/*.cpp
-		${PROJECT_SOURCE_DIR}/E32Explorer/Gui/*.cpp
-		${PROJECT_SOURCE_DIR}/deps/gl3w.c
-	)
-add_executable(${PROJECT_NAME} ${sources})
+function(create_directory_groups)
+    # Place any files that aren't in the source list in a separate group so that they don't get in
+    # the way.
+    source_group("Other Files" REGULAR_EXPRESSION ".")
 
+    foreach(file_name ${ARGV})
+        get_filename_component(dir_name "${file_name}" PATH)
+        # Group names use '\' as a separator even though the entire rest of CMake uses '/'...
+        string(REPLACE "/" "\\" group_name "${dir_name}")
+        source_group("${group_name}" FILES "${file_name}")
+    endforeach()
+endfunction()
+
+include_directories (${PROJECT_SOURCE_DIR}/deps/include/)
+
+add_subdirectory(E32Explorer)
+
+#file(GLOB SRCS
+		# E32Explorer/*.cpp
+ 		# E32Explorer/imgui/*.cpp
+		# E32Explorer/Gui/*.cpp
+		# deps/gl3w.c
+ 	# )
+	
+#file(GLOB HEADERS
+		# E32Explorer/*.h
+ 		# E32Explorer/imgui/*.h
+		# E32Explorer/Gui/*.h
+	# )
+	
+set(SRCS
+		E32Explorer/E32Explorer.cpp
+		E32Explorer/Loader.cpp
+		E32Explorer/Utils.cpp
+		E32Explorer/Gui/Gui.cpp
+		E32Explorer/Gui/GuiE32Image.cpp
+		E32Explorer/Gui/GuiTRomImage.cpp
+		E32Explorer/imgui/imgui.cpp
+		E32Explorer/imgui/imgui_demo.cpp
+		E32Explorer/imgui/imgui_draw.cpp
+		E32Explorer/imgui/imgui_impl_glfw_gl3.cpp
+		deps/gl3w.c
+ 	)
+	
+set(HEADERS
+		E32Explorer/E32Image.h
+		E32Explorer/E32Std.h
+		E32Explorer/Loader.h
+		E32Explorer/TRomImage.h
+		E32Explorer/Utils.h
+		E32Explorer/Gui/Gui.h
+		E32Explorer/Gui/GuiE32Image.h
+		E32Explorer/Gui/GuiTRomImage.h
+		E32Explorer/Gui/MemoryEditor.h
+		E32Explorer/imgui/imconfig.h
+		E32Explorer/imgui/imgui.h
+		E32Explorer/imgui/imgui_impl_glfw_gl3.h
+		E32Explorer/imgui/imgui_internal.h
+		E32Explorer/imgui/stb_rect_pack.h
+		E32Explorer/imgui/stb_textedit.h
+		E32Explorer/imgui/stb_truetype.h
+	)
+	
+create_directory_groups(${SRCS} ${HEADERS})
+
+add_executable(${PROJECT_NAME} ${SRCS} ${HEADERS})
 
 find_package(OpenGL REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
