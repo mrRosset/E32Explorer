@@ -41,7 +41,7 @@ struct E32RelocationBlock
 	uint32_t block_size;
 	//2 byte sub-block entry.
 	//The top 4 bits specify the type of relocation :
-	//  0 – Not a valid relocation.
+	//	0 – Not a valid relocation.
 	//	1 – Relocate relative to code section.
 	//	2 – Relocate relative to data section.
 	//	3 – Try to work it out at load time(legacy algorithm).
@@ -69,11 +69,6 @@ struct E32Flags
 	uint8_t header_format;      // 0 = Basic, 1 = J-format, 2 = V-format
 	uint8_t import_format;      // 0 = Standard PE format, 1 = ELF format, 2 = PE format without redundancy in the import section
 };
-
-/*struct E32ImageHeaderJ: E32ImageHeader {
-	uint32_t compression_type; //0 = no compression
-	uint32_t uncompressed_size;
-};*/
 
 struct E32ImageHeader {
 	uint32_t uid1;
@@ -111,7 +106,26 @@ struct E32ImageHeader {
 	ProcessPriority priority;
 };
 
+struct E32ImageHeaderJ : public E32ImageHeader {
+	//Elements are not placed in the same order as they are in the file
+	
+	/*
+	Should there be a version for this executable or it's still the code and data checksum ?
+	The description from Symbian Internals is not very clear:
+	"Version number of this executable – a 16-bit major and a 16-bit
+	minor version number. This is used in link resolution (V-format only).
+	In original format, this contained a checksum of the code, but this
+	was never used."
+	*/
 
+	uint32_t compression_type; // 0 = no compression
+	uint32_t uncompressed_size;	// Only if compression_type != 0
+								// Comment from f32image.h in SDKv3:
+								// "Uncompressed size of file
+								// For J format this is file size - sizeof(E32ImageHeader)
+								// and this is included as part of the compressed data :-(
+								// For other formats this is file size - total header size"
+};
 
 struct E32Image {
 	std::vector<uint8_t> data;

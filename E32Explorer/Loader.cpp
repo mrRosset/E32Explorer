@@ -46,8 +46,8 @@ bool loader::load(std::string path, E32Image& image)
 		//std::cerr << "Not an E32Image. TRomImage are not supported";
 		return false;
 	}
-	if (image.header->flags.header_format != 0) {
-		std::cerr << "Not a standard header. J and V headers are not supported";
+	if (image.header->flags.header_format > 1) {
+		std::cerr << "Not a basic header or J-header. V-headers are not supported";
 		return false;
 	}
 	if (image.header->flags.import_format != 0 && image.header->flags.import_format != 2) {
@@ -137,7 +137,7 @@ void loader::parseHeader(E32Image& image)
 	switch (header_format) {
 	case 0: image.header = std::make_unique<E32ImageHeader>(); //Basic format
 			break;
-	case 1: image.header = std::make_unique<E32ImageHeader>(); //J-format
+	case 1: image.header = std::make_unique<E32ImageHeaderJ>(); //J-format
 			break;
 	case 2: image.header = std::make_unique<E32ImageHeader>(); //V-format
 		    break;
@@ -188,6 +188,19 @@ void loader::parseHeader(E32Image& image)
 	header->flags.entry_point_type = (header->flags_raw >> 5) & 7;
 	header->flags.header_format = (header->flags_raw >> 24) & 0xF;
 	header->flags.import_format = (header->flags_raw >> 28) & 0xF;
+
+	if (header->flags.header_format == 1) {
+		//Is is possible to get a uniq_ptr to E32ImageHeaderJ ? Didn't found how
+		E32ImageHeaderJ* headerJ = static_cast<E32ImageHeaderJ*>(image.header.get());
+		headerJ->compression_type = data32[7];
+		if (headerJ->compression_type != 0) {
+			headerJ->uncompressed_size = data32[31];
+		}
+		else {
+			/// default value to avoid non - initialized value.Not in any standard.
+			headerJ->uncompressed_size = 0;
+		}
+	}
 
 	// Don't include the header in the data
 	//std::vector<decltype(image.data)::value_type>(image.data.begin() + image.header->code_offset, image.data.end()).swap(image.data);
