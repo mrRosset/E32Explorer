@@ -6,7 +6,7 @@ Can show currently show:
 
 E32Image:
 - [x] With standard header
-- [ ] With J-format header
+- [x] With J-format header
 - [ ] With V-format header
 
 E32Image:
