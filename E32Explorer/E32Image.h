@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <vector>
 #include <memory>
-#include "E32Std.h"
+#include "E32Std.h"	
 
 // Sources:
 // For a short overview: https://web.archive.org/web/20120813204404/http://www.antonypranata.com/node/10
@@ -120,8 +120,7 @@ struct E32Image {
 	bool valid_imports = false;
 	//uint32_t import_count;
 
-
-	E32ImageHeader header;
+	std::unique_ptr<E32ImageHeader> header;
 	E32CodeSection code_section; //Contains text section, import address table and export directory
 	//BSS section <- usually empty
 	//Data section  <- usually empty
