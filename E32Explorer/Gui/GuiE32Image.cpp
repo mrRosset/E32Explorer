@@ -21,6 +21,12 @@ bool GuiE32Image::render() {
 		glfwPollEvents();
 		ImGui_ImplGlfwGL3_NewFrame();
 		std::unique_ptr<E32ImageHeader>& header = image.header;
+		
+		//TODO: find a better way to avoid having a null reference
+		E32ImageHeaderJ* headerJ = nullptr;
+		if (header->flags.header_format == 1) {
+			headerJ = static_cast<E32ImageHeaderJ*>(image.header.get());
+		}
 
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowTitleAlign.x = 0.5;
@@ -53,7 +59,11 @@ bool GuiE32Image::render() {
 			}
 			ImGui::NextColumn();
 			ImGui::Selectable("code_checksum"); ImGui::NextColumn(); imgui_print_hex(header->code_checksum); ImGui::NextColumn();
-			ImGui::Selectable("data_checksum"); ImGui::NextColumn(); imgui_print_hex(header->data_checksum); ImGui::NextColumn();
+			if (!headerJ) {
+				ImGui::Selectable("data_checksum"); ImGui::NextColumn(); imgui_print_hex(header->data_checksum); ImGui::NextColumn();
+			} else {
+				ImGui::Selectable("compression_type"); ImGui::NextColumn(); imgui_print_hex(headerJ->data_checksum); ImGui::NextColumn();
+			}
 			ImGui::Selectable("major"); ImGui::NextColumn(); imgui_print_hex(header->major); ImGui::NextColumn();
 			ImGui::Selectable("minor"); ImGui::NextColumn(); imgui_print_hex(header->minor); ImGui::NextColumn();
 			ImGui::Selectable("build"); ImGui::NextColumn(); imgui_print_hex(header->build); ImGui::NextColumn();
@@ -91,6 +101,9 @@ bool GuiE32Image::render() {
 			default: ImGui::Selectable("(Unknown)"); break;
 			}
 			ImGui::NextColumn();
+			if (headerJ && headerJ->compression_type!=0) {
+				ImGui::Selectable("uncompressed_size"); ImGui::NextColumn(); imgui_print_hex(headerJ->uncompressed_size); ImGui::NextColumn();
+			}
 			ImGui::Columns(1, "End text");
 			//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
