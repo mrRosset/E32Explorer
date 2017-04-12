@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <vector>
 #include <memory>
-#include "E32Std.h"	
+#include "E32Std.h"
 
 // Sources:
 // For a short overview: https://web.archive.org/web/20120813204404/http://www.antonypranata.com/node/10
@@ -41,7 +41,7 @@ struct E32RelocationBlock
 	uint32_t block_size;
 	//2 byte sub-block entry.
 	//The top 4 bits specify the type of relocation :
-	//0 – Not a valid relocation.
+	//  0 – Not a valid relocation.
 	//	1 – Relocate relative to code section.
 	//	2 – Relocate relative to data section.
 	//	3 – Try to work it out at load time(legacy algorithm).
