@@ -17,7 +17,7 @@ E32Image:
 TRomImage
 - [ ] With standard header
 
-![E32Explorer screenshot](http://i.imgur.com/QdgaaXK.png)
+![E32Explorer screenshot](http://i.imgur.com/feE73GH.png)
 
 
 ### Build
