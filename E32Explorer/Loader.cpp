@@ -62,7 +62,7 @@ bool loader::load(std::string path, E32Image& image)
 	checkImportValidity(image);
 
 	if (!image.valid_imports) {
-		std::cerr << "Incoherence betweem the Import Address Table and the Import section" << std::endl;
+		std::cerr << "Incoherence between the Import Address Table and the Import section" << std::endl;
 		return false;
 	}
 
