@@ -15,10 +15,7 @@ struct E32CodeSection
 	//Text section
 	//Should the data be copied here ? Or just let the offset from the header.
 
-	//Assumption: We don't have negative import ordinal.
-	//Otherwise use int32_t.
 	std::vector<uint32_t> import_address_table;
-	
 	std::vector<uint32_t> export_directory;
 };
 
