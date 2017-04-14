@@ -21,6 +21,7 @@ struct E32CodeSection
 
 struct E32ImportBlock
 {
+	//This is only for EKA1 targeted import block from PE
 	uint32_t dll_name_offset; //relative to the import section
 	int32_t number_of_imports; // number of imports from this dll
 	std::vector<uint32_t> ordinals;	// TUint32 iImport[iNumberOfImports];
