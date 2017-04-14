@@ -34,6 +34,7 @@ struct E32ImportSection
 };
 
 //See page 390 of Symbian Internals
+//For a good schema on the PE version of this: http://stackoverflow.com/questions/17436668/how-are-pe-base-relocations-build-up
 struct E32RelocationBlock
 {
 	uint32_t offset;
