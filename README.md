@@ -14,6 +14,10 @@ E32Image:
 - [x] With PE without redundancy (untested)
 - [ ] With elf import format
 
+E32Image:
+- [x] with EKA1 import format
+- [ ] With EKA2 import format
+
 TRomImage
 - [ ] With standard header
 
