@@ -247,13 +247,12 @@ void loader::parseIAT(E32Image& image) {
 	uint32_t iat_offset = image.header->code_offset + image.header->text_size;
 	uint32_t i = 0;
 
-	uint32_t line = data32[iat_offset/4]; //divided by 4 we because we use uin32t (= bytes)
-	image.code_section.import_address_table.push_back(line);
-
+	uint32_t line = data32[iat_offset/4]; //divided by 4 we because we use uin32t (= 4 bytes)
+	
 	while (line != 0) {
+		image.code_section.import_address_table.push_back(line);
 		i++;
 		line = data32[(iat_offset/4) + i];
-		image.code_section.import_address_table.push_back(line);
 	}
 }
 
