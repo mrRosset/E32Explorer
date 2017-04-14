@@ -35,6 +35,7 @@ struct E32ImportSection
 	std::vector<std::unique_ptr<E32ImportBlock>> imports; // E32ImportBlock[iDllRefTableCount];
 };
 
+//See page 390 of Symbian Internals
 struct E32RelocationBlock
 {
 	uint32_t offset;
