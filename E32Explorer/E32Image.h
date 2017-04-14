@@ -112,10 +112,10 @@ struct E32ImageHeaderJ : public E32ImageHeader {
 	/*
 	Should there be a version for this executable or it's still the code and data checksum ?
 	The description from Symbian Internals is not very clear:
-	"Version number of this executable – a 16-bit major and a 16-bit
-	minor version number. This is used in link resolution (V-format only).
-	In original format, this contained a checksum of the code, but this
-	was never used."
+		"Version number of this executable – a 16-bit major and a 16-bit
+		minor version number. This is used in link resolution (V-format only).
+		In original format, this contained a checksum of the code, but this
+		was never used."
 	*/
 
 	uint32_t compression_type; // 0 = no compression
@@ -132,7 +132,6 @@ struct E32Image {
 	bool valid_uid_checksum = false;
 	bool valid_signature = false;
 	bool valid_imports = false;
-	//uint32_t import_count;
 
 	std::unique_ptr<E32ImageHeader> header;
 	E32CodeSection code_section; //Contains text section, import address table and export directory
