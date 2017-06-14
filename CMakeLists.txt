@@ -30,6 +30,7 @@ add_subdirectory(E32Explorer)
 		# E32Explorer/*.cpp
  		# E32Explorer/imgui/*.cpp
 		# E32Explorer/Gui/*.cpp
+		# E32Explorer/Loader/*.cpp
 		# deps/gl3w.c
  	# )
 	
@@ -37,12 +38,14 @@ add_subdirectory(E32Explorer)
 		# E32Explorer/*.h
  		# E32Explorer/imgui/*.h
 		# E32Explorer/Gui/*.h
+		# E32Explorer/Loader/*.h
 	# )
 	
 set(SRCS
 		E32Explorer/E32Explorer.cpp
-		E32Explorer/Loader.cpp
 		E32Explorer/Utils.cpp
+		E32Explorer/Loader/E32ImageLoader.cpp
+		E32Explorer/Loader/TRomImageLoader.cpp
 		E32Explorer/Gui/Gui.cpp
 		E32Explorer/Gui/GuiE32Image.cpp
 		E32Explorer/Gui/GuiTRomImage.cpp
@@ -56,9 +59,10 @@ set(SRCS
 set(HEADERS
 		E32Explorer/E32Image.h
 		E32Explorer/E32Std.h
-		E32Explorer/Loader.h
 		E32Explorer/TRomImage.h
 		E32Explorer/Utils.h
+		E32Explorer/Loader/E32ImageLoader.h
+		E32Explorer/Loader/TRomImageLoader.h
 		E32Explorer/Gui/Gui.h
 		E32Explorer/Gui/GuiE32Image.h
 		E32Explorer/Gui/GuiTRomImage.h
