@@ -2,7 +2,9 @@
 #include <chrono>
 #include <thread>
 #include "E32Image.h"
-#include "Loader.h"
+#include "TRomImage.h"
+#include "Loader/E32ImageLoader.h"
+#include "Loader/TRomImageLoader.h"
 #include "Gui/GuiE32Image.h"
 #include "Gui/GuiTRomImage.h"
 
@@ -19,7 +21,7 @@ int main(int argc, char *argv[])
 	if (argc > 1) {
 		//First try with E32Image
 		E32Image file;
-		bool worked = loader::load(argv[1], file);
+		bool worked = E32ImageLoader::load(argv[1], file);
 
 		Gui* gui = nullptr;
 
@@ -29,7 +31,7 @@ int main(int argc, char *argv[])
 		else {
 			//next try: TRomImage
 			TRomImage file;
-			bool worked = loader::load(argv[1], file);
+			bool worked = TRomImageLoader::load(argv[1], file);
 
 			if (!worked) {
 				//not a know format

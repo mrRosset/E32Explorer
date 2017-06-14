@@ -4,11 +4,9 @@
 
 struct E32Image;
 
-class E32ImageLoader
+namespace E32ImageLoader
 {
-public:
 	bool load(std::string path, E32Image& image);
-private:
 	void parseHeader(E32Image& image);
 	void parseIAT(E32Image& image);
 	void parseExportDir(E32Image& image);

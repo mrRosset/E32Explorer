@@ -4,11 +4,9 @@
 
 struct TRomImage;
 
-class TRomImageLoader
+namespace TRomImageLoader
 {
-public:
 	bool load(std::string path, TRomImage& image);
-private:
 	void parseHeader(TRomImage& image);
 	void checkHeaderValidity(TRomImage& image);
 };
