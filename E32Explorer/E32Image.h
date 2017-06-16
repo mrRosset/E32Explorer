@@ -8,6 +8,8 @@
 // Sources:
 // For a short overview: https://web.archive.org/web/20120813204404/http://www.antonypranata.com/node/10
 // For a more detailed explanation, see "Symbian OS Internals" chapter 10 and Appendix 2 and 3
+// For factual informations:
+//	s60 SDK v3: f32image.h
 
 
 struct E32CodeSection
