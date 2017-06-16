@@ -119,9 +119,9 @@ void E32ImageLoader::parseHeader(E32Image& image)
 	header->priority = static_cast<ProcessPriority>(data32[30]);
 
 	// Get the flags
-	header->flags.executable_type = (header->flags_raw >> 0) & 1;
-	header->flags.call_entry_point = (header->flags_raw >> 1) & 1;
-	header->flags.fixed_address = (header->flags_raw >> 2) & 1;
+	header->flags.executable_type = utils::getBit(header->flags_raw, 0);
+	header->flags.call_entry_point = utils::getBit(header->flags_raw, 1);
+	header->flags.fixed_address = utils::getBit(header->flags_raw, 2);
 	header->flags.abi = (header->flags_raw >> 3) & 0x3;
 	header->flags.entry_point_type = (header->flags_raw >> 5) & 7;
 	header->flags.header_format = (header->flags_raw >> 24) & 0xF;
