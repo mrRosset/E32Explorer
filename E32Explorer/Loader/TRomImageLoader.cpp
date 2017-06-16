@@ -69,6 +69,19 @@ void TRomImageLoader::parseHeader(TRomImage& image) {
 	header.next_extension_linear_address = data32[25]; //uint32_t
 	header.harware_variant = data32[26]; //uint32_t
 
-										 //TODO parse flags
-										 //header.flags = data32[]; //TRomImageFlags
+	//parse flags
+	header.flags.executable_type = utils::getBit(header.flags_raw, 0);
+	header.flags.fixed_address = utils::getBit(header.flags_raw, 2);
+	header.flags.abi = (header.flags_raw >> 3) & 0b11;
+	header.flags.entry_point_type = (header.flags_raw >> 5) & 0b111;
+	header.flags.exe_in_tree_flag = utils::getBit(header.flags_raw, 23);
+	header.flags.data_present_flag = utils::getBit(header.flags_raw, 24);
+	header.flags.data_init_flag = utils::getBit(header.flags_raw, 25);
+	header.flags.data_flag = utils::getBit(header.flags_raw, 26);
+	header.flags.secondary_flag = utils::getBit(header.flags_raw, 27);
+	header.flags.device_flag = utils::getBit(header.flags_raw, 28);
+	header.flags.extension_flag = utils::getBit(header.flags_raw, 29);
+	header.flags.variant_flag = utils::getBit(header.flags_raw, 30);
+	header.flags.primary_flag = utils::getBit(header.flags_raw, 31);
+
 }

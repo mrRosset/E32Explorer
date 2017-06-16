@@ -28,7 +28,7 @@ struct TRomImageFlags
 	uint8_t abi; // 0 = GCC98r2, 1 = EABI
 	uint8_t entry_point_type; // 0 = EKA1, 1 = EKA2
 	bool exe_in_tree_flag; // 1 = links directly/indirectly to an exe (if yes it's first id dll ref table)
-	bool data_presnet_flag; // 1 = it/it's dependencies (with linked dll) has .bss/.data 
+	bool data_present_flag; // 1 = it/it's dependencies (with linked dll) has .bss/.data 
 	bool data_init_flag; // 1 = it/it's dependencies (not linked dll) has .bss/.data 
 	bool data_flag; // 1 = it has a .data/.bss and is not a variant/extension
 	bool secondary_flag;// 1 = it's a file server
