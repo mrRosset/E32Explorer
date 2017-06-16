@@ -14,7 +14,7 @@ bool E32ImageLoader::load(std::string path, E32Image& image)
 	checkHeaderValidity(image);
 
 	if (!image.valid_uid_checksum) {
-		std::cerr << "Invalid ui checksum. Not a valid Symbian OS app";
+		std::cerr << "Wrong uid checksum, not a valid E32Image.";
 		return false;
 	}
 	if (!image.valid_signature) {

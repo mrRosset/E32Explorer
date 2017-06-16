@@ -14,12 +14,16 @@ bool TRomImageLoader::load(std::string path, TRomImage& image) {
 	parseHeader(image);
 	checkHeaderValidity(image);
 
+	if (!image.valid_uid_checksum) {
+		std::cerr << "Wrong uid checksum, not a valid TRomImage.";
+		return false;
+	}
+
 	return true;
 }
 
 void TRomImageLoader::checkHeaderValidity(TRomImage& image) {
 	TRomImageHeader& header = image.header;
-	// Check the UID checksum validity
 	uint8_t uids[12] = {};
 	utils::u8_from_32(uids, image.header.uid1);
 	utils::u8_from_32(uids + 4, image.header.uid2);
