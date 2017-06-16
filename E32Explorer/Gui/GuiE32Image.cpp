@@ -161,7 +161,7 @@ bool GuiE32Image::render() {
 			//Size = 316, 160
 			ImGui::SetNextWindowPos(ImVec2(610, 620), ImGuiSetCond_FirstUseEver);
 			ImGui::SetNextWindowSize(ImVec2(316, 160), ImGuiSetCond_FirstUseEver);
-			ImGui::Begin("Flags", &show_sections_window);
+			ImGui::Begin("Flags", &show_metadata_window);
 			ImGui::Columns(2, "FlagsTable", true);
 			ImGui::Selectable("Executable type:"); ImGui::NextColumn();
 			switch (header->flags.executable_type) {
