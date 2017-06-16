@@ -32,8 +32,8 @@ bool GuiE32Image::render() {
 		style.WindowTitleAlign.x = 0.5;
 
 		if (show_header_window) {
-			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(335, 600), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(335, 600), ImGuiSetCond_Always);
 			ImGui::Begin(headerJ ? "HeaderJ" : "Header", &show_header_window);
 			ImGui::Columns(2, "File Infos", true);
 			ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header->uid1); ImGui::NextColumn();
@@ -110,8 +110,8 @@ bool GuiE32Image::render() {
 		}
 
 		if (show_sections_window) {
-			ImGui::SetNextWindowPos(ImVec2(10, 620), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(580, 150), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(10, 620), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(580, 150), ImGuiSetCond_Always);
 			ImGui::Begin("Sections", &show_sections_window);
 			ImGui::Columns(6, "SectionTable", true);
 			ImGui::SetColumnOffset(1, 70);
@@ -159,8 +159,8 @@ bool GuiE32Image::render() {
 			//
 			//Pos=624,619
 			//Size = 316, 160
-			ImGui::SetNextWindowPos(ImVec2(610, 620), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(316, 160), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(610, 620), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(316, 160), ImGuiSetCond_Always);
 			ImGui::Begin("Flags", &show_metadata_window);
 			ImGui::Columns(2, "FlagsTable", true);
 			ImGui::Selectable("Executable type:"); ImGui::NextColumn();
@@ -217,8 +217,8 @@ bool GuiE32Image::render() {
 			ImGui::End();
 		}
 		if (show_iat_window) {
-			ImGui::SetNextWindowPos(ImVec2(350, 10), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(70, 600), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(350, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(70, 600), ImGuiSetCond_Always);
 			ImGui::Begin("IAT", &show_iat_window);
 			for (uint32_t iat_entry : image.code_section.import_address_table) {
 				ImGui::Selectable(std::to_string(iat_entry).c_str());
@@ -227,8 +227,8 @@ bool GuiE32Image::render() {
 		}
 
 		if (show_export_dir_window) {
-			ImGui::SetNextWindowPos(ImVec2(640, 10), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(150, 600), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(640, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(150, 600), ImGuiSetCond_Always);
 			ImGui::Begin("Export Dir", &show_export_dir_window);
 			ImGui::Columns(2, "exportDirTable", true);
 			ImGui::SetColumnOffset(1, 50);
@@ -242,8 +242,8 @@ bool GuiE32Image::render() {
 		}
 
 		if (show_import_section) {
-			ImGui::SetNextWindowPos(ImVec2(425, 10), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(210, 600), ImGuiSetCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(425, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(210, 600), ImGuiSetCond_Always);
 			ImGui::Begin("Import Section", &show_export_dir_window);
 
 			//std::cout << "size: " << image.import_section.size << std::endl;
@@ -261,13 +261,13 @@ bool GuiE32Image::render() {
 		}
 
 		ImGui::SetNextWindowPos(ImVec2(795
-			, 10), ImGuiSetCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(478, 475), ImGuiSetCond_FirstUseEver);
+			, 10), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(478, 475), ImGuiSetCond_Always);
 		memory_editor.Draw("Code And Constant Section", &image.data[image.header->code_offset], image.header->text_size, image.header->code_offset);
 
 
 
-		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_Always);
 		//ImGui::ShowTestWindow(&show_test_window);
 
 		// Rendering
