@@ -15,6 +15,53 @@ constexpr auto to_underlying(E e) -> typename std::underlying_type<E>::type
 	return static_cast<typename std::underlying_type<E>::type>(e);
 }
 
+bool GuiTRomImage::render() {
+	if (!glfwWindowShouldClose(window))
+	{
+		glfwPollEvents();
+		ImGui_ImplGlfwGL3_NewFrame();
+
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.WindowTitleAlign.x = 0.5;
+
+		if (show_header_window) {
+			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(390, 510), ImGuiSetCond_Always);
+			ImGui::Begin("Header", &show_header_window);
+			render_header_window(image.header);
+			ImGui::End();
+		}
+
+		if (show_metadata_window) {
+			ImGui::SetNextWindowPos(ImVec2(10, 530), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(250, 240), ImGuiSetCond_Always);
+			ImGui::Begin("Flags", &show_metadata_window);
+			render_flags_window(image.header);
+			ImGui::End();
+		}
+
+
+		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+		//ImGui::ShowTestWindow(&show_test_window);
+
+		// Rendering
+		int display_w, display_h;
+		glfwGetFramebufferSize(window, &display_w, &display_h);
+		glViewport(0, 0, display_w, display_h);
+		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		glClear(GL_COLOR_BUFFER_BIT);
+		ImGui::Render();
+		glfwSwapBuffers(window);
+
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+
 void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 	ImGui::Columns(2, "File Infos", true);
 	ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header.uid1); ImGui::NextColumn();
@@ -63,37 +110,51 @@ void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 }
 
 
-bool GuiTRomImage::render() {
-	if (!glfwWindowShouldClose(window))
-	{
-		glfwPollEvents();
-		ImGui_ImplGlfwGL3_NewFrame();
+void GuiTRomImage::render_flags_window(TRomImageHeader& header) {
+			ImGui::Columns(2, "FlagsTable", true);
+			
+			ImGui::Selectable("Executable type:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.executable_type ? "DLL" : "Exe"); ImGui::NextColumn();
 
-		ImGuiStyle& style = ImGui::GetStyle();
-		style.WindowTitleAlign.x = 0.5;
+			ImGui::Selectable("Fixed address:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.fixed_address ? "Yes" : "No"); ImGui::NextColumn();
 
-		if (show_header_window) {
-			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(335, 600), ImGuiSetCond_FirstUseEver);
-			ImGui::Begin("Header", &show_header_window);
-			render_header_window(image.header);
-			ImGui::End();
-		}
-		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-		//ImGui::ShowTestWindow(&show_test_window);
+			ImGui::Selectable("ABI:"); ImGui::NextColumn();
+			switch (header.flags.abi) {
+			case 0: ImGui::Selectable("GCC98r2"); break;
+			case 1: ImGui::Selectable("EABI"); break;
+			default: ImGui::Selectable("Unknown"); break;
+			}
+			ImGui::NextColumn();
+			
+			ImGui::Selectable("Entry point type:"); ImGui::NextColumn();
+			switch (header.flags.entry_point_type) {
+			case 0: ImGui::Selectable("EKA1"); break;
+			case 1: ImGui::Selectable("EKA2"); break;
+			default: ImGui::Selectable("Unknown"); break;
+			}
+			ImGui::NextColumn();
 
-		// Rendering
-		int display_w, display_h;
-		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
-		ImGui::Render();
-		glfwSwapBuffers(window);
+			ImGui::Selectable("Exe in tree:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.exe_in_tree_flag ? "Yes" : "No"); ImGui::NextColumn();
 
-		return true;
-	}
-	else {
-		return false;
-	}
+			ImGui::Selectable("Data present:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.data_present_flag ? "Yes" : "No"); ImGui::NextColumn();
+
+			ImGui::Selectable("Data init:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.data_init_flag ? "Yes" : "No"); ImGui::NextColumn();
+
+			ImGui::Selectable("Data:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.data_flag ? "Yes" : "No"); ImGui::NextColumn();
+
+			ImGui::Selectable("File server:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.secondary_flag ? "Yes" : "No"); ImGui::NextColumn();
+
+			ImGui::Selectable("Device driver:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.device_flag ? "Yes" : "No"); ImGui::NextColumn();
+
+			ImGui::Selectable("Kernel extension:"); ImGui::NextColumn();
+			ImGui::Selectable(header.flags.primary_flag ? "Yes" : "No"); ImGui::NextColumn();
+
 }
+
