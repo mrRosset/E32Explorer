@@ -34,7 +34,7 @@ bool GuiE32Image::render() {
 		if (show_header_window) {
 			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_FirstUseEver);
 			ImGui::SetNextWindowSize(ImVec2(335, 600), ImGuiSetCond_FirstUseEver);
-			ImGui::Begin("Header", &show_header_window);
+			ImGui::Begin(headerJ ? "HeaderJ" : "Header", &show_header_window);
 			ImGui::Columns(2, "File Infos", true);
 			ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header->uid1); ImGui::NextColumn();
 			ImGui::Selectable("uid2"); ImGui::NextColumn(); imgui_print_hex(header->uid2); ImGui::NextColumn();
