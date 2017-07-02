@@ -34,7 +34,7 @@ bool GuiTRomImage::render() {
 
 		if (show_metadata_window) {
 			ImGui::SetNextWindowPos(ImVec2(10, 530), ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(ImVec2(250, 240), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(240, 240), ImGuiSetCond_Always);
 			ImGui::Begin("Flags", &show_metadata_window);
 			render_flags_window(image.header);
 			ImGui::End();
@@ -109,9 +109,9 @@ void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 	ImGui::Selectable("harware_variant"); ImGui::NextColumn(); imgui_print_hex(header.harware_variant); ImGui::NextColumn();
 }
 
-
 void GuiTRomImage::render_flags_window(TRomImageHeader& header) {
 			ImGui::Columns(2, "FlagsTable", true);
+			ImGui::SetColumnOffset(1, 150);
 			
 			ImGui::Selectable("Executable type:"); ImGui::NextColumn();
 			ImGui::Selectable(header.flags.executable_type ? "DLL" : "Exe"); ImGui::NextColumn();

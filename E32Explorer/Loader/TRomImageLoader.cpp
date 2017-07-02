@@ -12,6 +12,7 @@ bool TRomImageLoader::load(std::string path, TRomImage& image) {
 	}
 
 	parseHeader(image);
+	parseExportDir(image);
 	checkHeaderValidity(image);
 
 	if (!image.valid_uid_checksum) {
@@ -84,4 +85,18 @@ void TRomImageLoader::parseHeader(TRomImage& image) {
 	header.flags.variant_flag = utils::getBit(header.flags_raw, 30);
 	header.flags.primary_flag = utils::getBit(header.flags_raw, 31);
 
+}
+
+void TRomImageLoader::parseExportDir(TRomImage& image) {
+	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
+
+	uint32_t header_size = 0x50392D54 - 0x50392CF0; //Code addr - File add for Euser.dll
+	uint32_t export_offset = image.header.export_dir_address - image.header.code_address + header_size;
+	
+	for (int32_t i = 0; i < image.header.export_dir_count; i++) {
+		//std::cout << i << ": " << data32[(export_offset / 4) + i] << std::endl;
+		image.export_directory.push_back(data32[(export_offset / 4) + i]);
+	}
+
+	//std::cout << image.export_directory.size() << std::endl;
 }
