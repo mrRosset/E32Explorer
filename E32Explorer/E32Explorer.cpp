@@ -19,26 +19,27 @@ std::string extract_filename(const std::string& filepath)
 int main(int argc, char *argv[])
 {
 	if (argc > 1) {
+		E32Image e32;
+		TRomImage trom;
+
 		//First try with E32Image
-		E32Image file;
-		bool worked = E32ImageLoader::load(argv[1], file);
+		bool worked = E32ImageLoader::load(argv[1], e32);
 
 		Gui* gui = nullptr;
 
 		if (worked) {
-			gui = new GuiE32Image(file, extract_filename(std::string(argv[1])));
+			gui = new GuiE32Image(e32, extract_filename(std::string(argv[1])));
 		}
 		else {
 			//next try: TRomImage
-			TRomImage file;
-			bool worked = TRomImageLoader::load(argv[1], file);
+			bool worked = TRomImageLoader::load(argv[1], trom);
 
 			if (!worked) {
 				//not a know format
 				return -1;
 			}
 
-			gui = new GuiTRomImage(file, extract_filename(std::string(argv[1])));
+			gui = new GuiTRomImage(trom, extract_filename(std::string(argv[1])));
 		}
 
 		bool running = true;

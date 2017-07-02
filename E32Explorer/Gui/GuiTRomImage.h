@@ -13,7 +13,7 @@ private:
 	bool show_export_dir_window = true;
 	void render_header_window(TRomImageHeader& header);
 	void render_flags_window(TRomImageHeader& header);
-	void render_export_windows(TRomImage& image);
+	void render_export_windows();
 public:
 	TRomImage& image;
 	GuiTRomImage(TRomImage& image, std::string additional_title);

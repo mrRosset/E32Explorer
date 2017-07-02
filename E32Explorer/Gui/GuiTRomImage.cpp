@@ -6,7 +6,6 @@ GuiTRomImage::GuiTRomImage(TRomImage& image_, std::string additional_title) :
 	Gui(additional_title),
 	image(image_)
 {
-
 }
 
 template<typename E>
@@ -44,7 +43,7 @@ bool GuiTRomImage::render() {
 			ImGui::SetNextWindowPos(ImVec2(410, 10), ImGuiSetCond_Always);
 			ImGui::SetNextWindowSize(ImVec2(150, 510), ImGuiSetCond_Always);
 			ImGui::Begin("Export Dir", &show_export_dir_window);
-			render_export_windows(image);
+			render_export_windows();
 			ImGui::End();
 		}
 		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
@@ -166,7 +165,7 @@ void GuiTRomImage::render_flags_window(TRomImageHeader& header) {
 
 }
 
-void GuiTRomImage::render_export_windows(TRomImage& image) {
+void GuiTRomImage::render_export_windows() {
 	ImGui::Columns(2, "exportDirTable", true);
 	ImGui::SetColumnOffset(1, 50);
 	for (uint32_t i = 0; i < image.export_directory.size(); i++) {
