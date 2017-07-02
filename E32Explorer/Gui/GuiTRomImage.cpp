@@ -40,7 +40,13 @@ bool GuiTRomImage::render() {
 			ImGui::End();
 		}
 
-
+		if (show_export_dir_window) {
+			ImGui::SetNextWindowPos(ImVec2(410, 10), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(150, 510), ImGuiSetCond_Always);
+			ImGui::Begin("Export Dir", &show_export_dir_window);
+			render_export_windows(image);
+			ImGui::End();
+		}
 		//ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
 		//ImGui::ShowTestWindow(&show_test_window);
 
@@ -64,6 +70,8 @@ bool GuiTRomImage::render() {
 
 void GuiTRomImage::render_header_window(TRomImageHeader& header) {
 	ImGui::Columns(2, "File Infos", true);
+	ImGui::SetColumnOffset(1, 235);
+
 	ImGui::Selectable("uid1"); ImGui::NextColumn(); imgui_print_hex(header.uid1); ImGui::NextColumn();
 	ImGui::Selectable("uid2"); ImGui::NextColumn(); imgui_print_hex(header.uid2); ImGui::NextColumn();
 	ImGui::Selectable("uid3"); ImGui::NextColumn(); imgui_print_hex(header.uid3); ImGui::NextColumn();
@@ -158,3 +166,13 @@ void GuiTRomImage::render_flags_window(TRomImageHeader& header) {
 
 }
 
+void GuiTRomImage::render_export_windows(TRomImage& image) {
+	ImGui::Columns(2, "exportDirTable", true);
+	ImGui::SetColumnOffset(1, 50);
+	for (uint32_t i = 0; i < image.export_directory.size(); i++) {
+		ImGui::Selectable(std::to_string(i + 1).c_str());
+		ImGui::NextColumn();
+		imgui_print_hex(image.export_directory[i]);
+		ImGui::NextColumn();
+	}
+}
