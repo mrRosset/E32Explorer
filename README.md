@@ -1,6 +1,6 @@
 # E32Explorer
 
-A simple tool to visualize the different parts of an Symbian OS E32Image.
+A simple tool to visualize the different parts of an Symbian OS E32Image and of a TRomImage.
 
 Can show currently show:
 
@@ -18,11 +18,12 @@ E32Image:
 - [x] with EKA1 import format
 - [ ] With EKA2 import format
 
+![E32Explorer screenshot](http://i.imgur.com/feE73GH.png)
+
 TRomImage
 - [ ] With standard header
 
-![E32Explorer screenshot](http://i.imgur.com/feE73GH.png)
-
+![E32Explorer screenshot2](http://i.imgur.com/tVjQCdx.png)
 
 ### Build
 ##### Windows
