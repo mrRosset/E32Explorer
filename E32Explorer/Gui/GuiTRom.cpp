@@ -23,15 +23,15 @@ bool GuiTRom::render() {
 
 		if (show_header_window) {
 			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(ImVec2(350, 510), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(350, 490), ImGuiSetCond_Always);
 			ImGui::Begin("Header", &show_header_window);
 			render_header_window();
 			ImGui::End();
 		}
 
 		if (show_dir_list_window) {
-			ImGui::SetNextWindowPos(ImVec2(10, 530), ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(ImVec2(350, 200), ImGuiSetCond_Always);
+			ImGui::SetNextWindowPos(ImVec2(10, 510), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(250, 170), ImGuiSetCond_Always);
 			ImGui::Begin("DirList", &show_dir_list_window);
 			render_dir_list_window();
 			ImGui::End();
@@ -90,10 +90,14 @@ void GuiTRom::render_header_window() {
 
 void GuiTRom::render_dir_list_window() {
 	auto& dir_list = image.directory_list;
-	ImGui::Columns(2, "DirList", true);
-	//ImGui::SetColumnOffset(1, 235);
+	ImGui::Columns(2, "Directory List", true);
+	ImGui::SetColumnOffset(1, 150);
 	ImGui::Selectable("Number Root Dir"); ImGui::NextColumn(); imgui_print_hex(dir_list.num_root_dir); ImGui::NextColumn();
-	ImGui::Selectable("1:"); ImGui::NextColumn(); ImGui::NextColumn();
+	ImGui::Columns(1);
+	ImGui::Text("");
+	ImGui::Text("1:");
+	ImGui::Columns(2, "DirList", true);
+	ImGui::SetColumnOffset(1, 150);
 	ImGui::Selectable("Hardware Variant"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.hardware_variant); ImGui::NextColumn();
 	ImGui::Selectable("Address"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.address_lin); ImGui::NextColumn();
 

@@ -14,19 +14,19 @@ bool E32ImageLoader::load(std::string path, E32Image& image)
 	checkHeaderValidity(image);
 
 	if (!image.valid_uid_checksum) {
-		std::cerr << "Wrong uid checksum, not a valid E32Image.";
+		std::cerr << "Wrong uid checksum, not a valid E32Image." << std::endl;
 		return false;
 	}
 	if (!image.valid_signature) {
-		//std::cerr << "Not an E32Image. TRomImage are not supported";
+		//std::cerr << "Not an E32Image. TRomImage are not supported" << std::endl;
 		return false;
 	}
 	if (image.header->flags.header_format > 1) {
-		std::cerr << "Not a basic header or J-header. V-headers are not supported";
+		std::cerr << "Not a basic header or J-header. V-headers are not supported" << std::endl;
 		return false;
 	}
 	if (image.header->flags.import_format != 0 && image.header->flags.import_format != 2) {
-		std::cerr << "ELF import section not supported";
+		std::cerr << "ELF import section not supported" << std::endl;
 		return false;
 	}
 

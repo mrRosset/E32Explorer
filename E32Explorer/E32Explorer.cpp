@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
 			gui = new GuiE32Image(e32, extract_filename(std::string(argv[1])));
 		}
 		else {
+			e32.data.clear();
 			//next try: TRomImage
 			worked = TRomImageLoader::load(argv[1], tromImage);
 
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
 			}
 
 			else {
+				tromImage.data.clear();
 				//next try TRom
 				worked = TRomLoader::parse(argv[1], trom);
 

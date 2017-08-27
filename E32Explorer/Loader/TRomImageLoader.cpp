@@ -16,7 +16,7 @@ bool TRomImageLoader::load(std::string path, TRomImage& image) {
 	checkHeaderValidity(image);
 
 	if (!image.valid_uid_checksum) {
-		std::cerr << "Wrong uid checksum, not a valid TRomImage.";
+		std::cerr << "Wrong uid checksum, not a valid TRomImage." << std::endl;
 		return false;
 	}
 
