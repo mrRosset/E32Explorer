@@ -47,14 +47,14 @@ struct TRomHeader {
 };
 
 struct TRootDirInfo {
-	uint32_t iHardwareVariant;
-	TLinAddr iAddressLin;
+	uint32_t hardware_variant;
+	TLinAddr address_lin;
 };
 
 struct TRomRootDirectoryList
 {
-	int32_t iNumRootDirs;
-	TRootDirInfo iRootDir[1];
+	int32_t num_root_dir;
+	TRootDirInfo root_dir;
 };
 
 struct TRomSectionHeader{
@@ -106,4 +106,5 @@ struct TRom {
 	std::vector<uint8_t> data;
 
 	TRomHeader header;
+	TRomRootDirectoryList directory_list;
 };

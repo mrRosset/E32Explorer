@@ -33,6 +33,9 @@ Gui::Gui(std::string additional_title) {
 
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL3_Init(window, true);
+
+	//no imgui.ini
+	ImGui::GetIO().IniFilename = NULL;
 }
 
 Gui::~Gui() {

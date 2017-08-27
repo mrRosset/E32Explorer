@@ -8,5 +8,5 @@ namespace TRomLoader
 {
 	bool parse(std::string path, TRom& image);
 	void parseHeader(TRom& image);
-
+	void parseRomDirectories(TRom& image);
 };

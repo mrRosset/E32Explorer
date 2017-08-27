@@ -12,6 +12,8 @@ bool TRomLoader::parse(std::string path, TRom& image) {
 	}
 
 	parseHeader(image);
+	//TODO: Check checksum
+	parseRomDirectories(image);
 
 	return true;
 }
@@ -46,4 +48,19 @@ void TRomLoader::parseHeader(TRom& image) {
 	header.trace_mask = data32[54]; //uint32_t
 	header.user_data_address = data32[55]; //TLinAddr
 	header.total_user_data_size = data32[56]; //int32_t
+}
+
+void TRomLoader::parseRomDirectories(TRom& image) {
+	uint32_t* data32 = reinterpret_cast<uint32_t*>(image.data.data());
+	TRomRootDirectoryList& directory_list = image.directory_list;
+	uint32_t dir_list_address = (image.header.rom_root_directory_list - 0x5000'0000) / 4;
+
+	directory_list.num_root_dir = data32[dir_list_address];
+	if (directory_list.num_root_dir != 1) {
+		std::cerr << "Insupported number of root directories: " << directory_list.num_root_dir << std::endl;
+		return;
+	}
+
+	directory_list.root_dir.hardware_variant = data32[dir_list_address + 1];
+	directory_list.root_dir.address_lin = data32[dir_list_address + 2];
 }

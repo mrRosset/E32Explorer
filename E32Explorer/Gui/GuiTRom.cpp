@@ -23,9 +23,17 @@ bool GuiTRom::render() {
 
 		if (show_header_window) {
 			ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiSetCond_Always);
-			ImGui::SetNextWindowSize(ImVec2(390, 510), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(350, 510), ImGuiSetCond_Always);
 			ImGui::Begin("Header", &show_header_window);
 			render_header_window();
+			ImGui::End();
+		}
+
+		if (show_dir_list_window) {
+			ImGui::SetNextWindowPos(ImVec2(10, 530), ImGuiSetCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(350, 200), ImGuiSetCond_Always);
+			ImGui::Begin("DirList", &show_dir_list_window);
+			render_dir_list_window();
 			ImGui::End();
 		}
 
@@ -50,7 +58,7 @@ bool GuiTRom::render() {
 
 void GuiTRom::render_header_window() {
 	TRomHeader& header = image.header;
-	ImGui::Columns(2, "File Infos", true);
+	ImGui::Columns(2, "Rom Infos", true);
 	ImGui::SetColumnOffset(1, 235);
 
 	ImGui::Selectable("major"); ImGui::NextColumn(); imgui_print_hex(header.major); ImGui::NextColumn();
@@ -78,5 +86,16 @@ void GuiTRom::render_header_window() {
 	ImGui::Selectable("trace_mask"); ImGui::NextColumn(); imgui_print_hex(header.trace_mask); ImGui::NextColumn();
 	ImGui::Selectable("user_data_address"); ImGui::NextColumn(); imgui_print_hex(header.user_data_address); ImGui::NextColumn();
 	ImGui::Selectable("total_user_data_size"); ImGui::NextColumn(); imgui_print_hex(header.total_user_data_size); ImGui::NextColumn();
+}
+
+void GuiTRom::render_dir_list_window() {
+	auto& dir_list = image.directory_list;
+	ImGui::Columns(2, "DirList", true);
+	//ImGui::SetColumnOffset(1, 235);
+	ImGui::Selectable("Number Root Dir"); ImGui::NextColumn(); imgui_print_hex(dir_list.num_root_dir); ImGui::NextColumn();
+	ImGui::Selectable("1:"); ImGui::NextColumn(); ImGui::NextColumn();
+	ImGui::Selectable("Hardware Variant"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.hardware_variant); ImGui::NextColumn();
+	ImGui::Selectable("Address"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.address_lin); ImGui::NextColumn();
+
 }
 
