@@ -1,22 +1,16 @@
 #pragma once
 
 #include "Gui.h"
-#include "../TRomImage.h"
-#include "MemoryEditor.h"
+#include "../TRom.h"
 
-
-class GuiTRomImage : public Gui
+class GuiTRom : public Gui
 {
 private:
 	bool show_header_window = true;
-	bool show_metadata_window = true;
-	bool show_export_dir_window = true;
-	void render_header_window(TRomImageHeader& header);
-	void render_flags_window(TRomImageHeader& header);
-	void render_export_windows();
+	void render_header_window();
 public:
-	TRomImage& image;
-	GuiTRomImage(TRomImage& image, std::string additional_title);
+	TRom& image;
+	GuiTRom(TRom& image, std::string additional_title);
 	bool render();
 
 };

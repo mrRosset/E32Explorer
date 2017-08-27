@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <vector>
 #include "E32Std.h"
 
 typedef int64_t TTime;
