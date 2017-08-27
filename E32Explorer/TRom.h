@@ -2,8 +2,6 @@
 #include <stdint.h>
 #include "E32Std.h"
 
-const uint32_t KRomHeaderSize = 0x100;
-
 typedef int64_t TTime;
 typedef uint32_t TLinAddr;
 
@@ -13,9 +11,16 @@ struct TVersion {
 	uint16_t Build;
 };
 
+struct TScreenSize {
+	uint32_t Width;
+	uint32_t Height;
+};
+
 struct TRomHeader {
 	uint8_t iJump[128];
-	TVersion iVersion;
+	uint8_t major;
+	uint8_t minor;
+	uint16_t build;
 	int64_t iTime;
 	TLinAddr iRomBase;
 	uint32_t iRomSize;
@@ -27,23 +32,17 @@ struct TRomHeader {
 	uint32_t iCheckSum;
 	int64_t iLanguage;
 	uint32_t iHardware;
-	union {
-		uint64_t iScreenSize;
-		struct iScreenSize {
-			uint32_t Width;
-			uint32_t Height;
-		};
-	};
+	uint32_t screen_width;
+	uint32_t screen_height;
 	int32_t iScreenBitsPerPixel;
 	TLinAddr iRomSectionHeader;
 	int32_t iTotalSvDataSize;
 	TLinAddr iVariantFile;
 	TLinAddr iExtensionFile;
 	TLinAddr iRelocInfo;
-	uint32_t  iTraceMask;  // The kernel tracemask
-	TLinAddr iUserDataAddress;	// non-MMU stuff
-	int32_t iTotalUserDataSize;	// non-MMU stuff
-	uint32_t iPad[32 - 25]; // sizeof(TRomHeader)=256
+	uint32_t iTraceMask;
+	TLinAddr iUserDataAddress;
+	int32_t iTotalUserDataSize;
 };
 
 struct TRootDirInfo {
@@ -99,4 +98,11 @@ public:
 	int64_t iKernelTime;
 	uint32_t iKernelCheckSum;
 	uint32_t iPad[32 - 11]; // sizeof(TExtensionRomHeader)=128
+};
+
+
+struct TRom {
+	std::vector<uint8_t> data;
+
+	TRomHeader header;
 };
