@@ -46,6 +46,7 @@ set(SRCS
 		E32Explorer/Utils.cpp
 		E32Explorer/Loader/E32ImageLoader.cpp
 		E32Explorer/Loader/TRomImageLoader.cpp
+		E32Explorer/Loader/TRomLoader.cpp
 		E32Explorer/Gui/Gui.cpp
 		E32Explorer/Gui/GuiE32Image.cpp
 		E32Explorer/Gui/GuiTRomImage.cpp
@@ -60,9 +61,11 @@ set(HEADERS
 		E32Explorer/E32Image.h
 		E32Explorer/E32Std.h
 		E32Explorer/TRomImage.h
+		E32Explorer/TRom.h
 		E32Explorer/Utils.h
 		E32Explorer/Loader/E32ImageLoader.h
 		E32Explorer/Loader/TRomImageLoader.h
+		E32Explorer/Loader/TRomLoader.h
 		E32Explorer/Gui/Gui.h
 		E32Explorer/Gui/GuiE32Image.h
 		E32Explorer/Gui/GuiTRomImage.h
