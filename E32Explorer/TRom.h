@@ -18,32 +18,32 @@ struct TScreenSize {
 };
 
 struct TRomHeader {
-	uint8_t iJump[128];
+	uint8_t jump_table[128];
 	uint8_t major;
 	uint8_t minor;
 	uint16_t build;
-	int64_t iTime;
-	TLinAddr iRomBase;
-	uint32_t iRomSize;
-	TLinAddr iRomRootDirectoryList;
-	TLinAddr iKernDataAddress;
-	TLinAddr iKernStackAddress;
-	TLinAddr iPrimaryFile;
-	TLinAddr iSecondaryFile;
-	uint32_t iCheckSum;
-	int64_t iLanguage;
-	uint32_t iHardware;
+	int64_t time;
+	TLinAddr rom_base_address;
+	uint32_t rom_size;
+	TLinAddr rom_root_directory_list;
+	TLinAddr kern_data_address;
+	TLinAddr kern_stack_address;
+	TLinAddr primary_file;
+	TLinAddr secondary_file;
+	uint32_t checksum;
+	int64_t language;
+	uint32_t hardware;
 	uint32_t screen_width;
 	uint32_t screen_height;
-	int32_t iScreenBitsPerPixel;
-	TLinAddr iRomSectionHeader;
-	int32_t iTotalSvDataSize;
-	TLinAddr iVariantFile;
-	TLinAddr iExtensionFile;
-	TLinAddr iRelocInfo;
-	uint32_t iTraceMask;
-	TLinAddr iUserDataAddress;
-	int32_t iTotalUserDataSize;
+	int32_t screen_bits_per_pixel;
+	TLinAddr rom_section_header;
+	int32_t total_sv_data_size;
+	TLinAddr variant_file;
+	TLinAddr extension_file;
+	TLinAddr reloc_info;
+	uint32_t trace_mask;
+	TLinAddr user_data_address;
+	int32_t total_user_data_size;
 };
 
 struct TRootDirInfo {

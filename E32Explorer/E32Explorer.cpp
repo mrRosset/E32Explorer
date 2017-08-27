@@ -5,8 +5,10 @@
 #include "TRomImage.h"
 #include "Loader/E32ImageLoader.h"
 #include "Loader/TRomImageLoader.h"
+#include "Loader/TRomLoader.h"
 #include "Gui/GuiE32Image.h"
 #include "Gui/GuiTRomImage.h"
+#include "Gui/GuiTRom.h"
 
 std::string extract_filename(const std::string& filepath)
 {
@@ -20,7 +22,9 @@ int main(int argc, char *argv[])
 {
 	if (argc > 1) {
 		E32Image e32;
-		TRomImage trom;
+		TRomImage tromImage;
+		TRom trom;
+		
 
 		//First try with E32Image
 		bool worked = E32ImageLoader::load(argv[1], e32);
@@ -32,14 +36,24 @@ int main(int argc, char *argv[])
 		}
 		else {
 			//next try: TRomImage
-			bool worked = TRomImageLoader::load(argv[1], trom);
+			worked = TRomImageLoader::load(argv[1], tromImage);
 
-			if (!worked) {
-				//not a know format
-				return -1;
+			if (worked) {
+				gui = new GuiTRomImage(tromImage, extract_filename(std::string(argv[1])));		
 			}
 
-			gui = new GuiTRomImage(trom, extract_filename(std::string(argv[1])));
+			else {
+				//next try TRom
+				worked = TRomLoader::parse(argv[1], trom);
+
+				if (!worked) {
+					//not a know format
+					return -1;
+				}
+				
+				gui = new GuiTRom(trom, extract_filename(std::string(argv[1])));
+			}
+
 		}
 
 		bool running = true;
