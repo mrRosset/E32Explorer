@@ -50,6 +50,7 @@ set(SRCS
 		E32Explorer/Gui/Gui.cpp
 		E32Explorer/Gui/GuiE32Image.cpp
 		E32Explorer/Gui/GuiTRomImage.cpp
+		E32Explorer/Gui/GuiTRom.cpp
 		E32Explorer/imgui/imgui.cpp
 		E32Explorer/imgui/imgui_demo.cpp
 		E32Explorer/imgui/imgui_draw.cpp
@@ -69,6 +70,7 @@ set(HEADERS
 		E32Explorer/Gui/Gui.h
 		E32Explorer/Gui/GuiE32Image.h
 		E32Explorer/Gui/GuiTRomImage.h
+		E32Explorer/Gui/GuiTRom.h
 		E32Explorer/Gui/MemoryEditor.h
 		E32Explorer/imgui/imconfig.h
 		E32Explorer/imgui/imgui.h
