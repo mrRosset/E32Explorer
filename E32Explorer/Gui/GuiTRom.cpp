@@ -96,7 +96,7 @@ void GuiTRom::render_dir_list_window() {
 	ImGui::Columns(1);
 	ImGui::Text("");
 	ImGui::Text("1:");
-	ImGui::Columns(2, "DirList", true);
+	ImGui::Columns(2, "Rom Root Directory List", true);
 	ImGui::SetColumnOffset(1, 150);
 	ImGui::Selectable("Hardware Variant"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.hardware_variant); ImGui::NextColumn();
 	ImGui::Selectable("Address"); ImGui::NextColumn(); imgui_print_hex(dir_list.root_dir.address_lin); ImGui::NextColumn();
