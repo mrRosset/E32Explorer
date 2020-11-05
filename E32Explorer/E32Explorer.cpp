@@ -82,6 +82,12 @@ int main(int argc, char *argv[])
 
 		delete gui;
 	}
+	else
+	{
+		printf("Usage: %s <E32ImageFile>\r\n\r\n", argv[0]);
+                puts("Press any key to exit.\r\n");
+		getchar();
+	}
 
 	return 0;
 
